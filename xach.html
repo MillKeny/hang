@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <h1 style="text-shadow: 1px 3px 6px rgb(255, 255, 255); font-weight: 1000;">MillKeny-ի Անիմաստ Հայերեն Բառարանի Ծրագրեր (անճաշակ դիզայնով)</h1>
+    <button class="hdr" onclick="location.href='index.html'">Հանգեր</button>
+    <button class="hdr" onclick="location.href='mostfreq.html'">Ամենատարածվածներ</button>
+    <button class="hdr" onclick="location.href='writer.html'">Պոետ</button>
+    <button class="hdr" onclick="location.href='xach.html'">ԽԱՉԲԱՌ</button>
+</header>
+<head>
+<meta charset="UTF-8">
+<!-- <script type="text/javascript" src="script.js"></script>-->
+<script type="text/javascript" src="dict.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<title>ԽԱՉԲԱՌ</title>
+<link rel="icon" type="image/x-icon" href="dictionary.png">
+
+</head>
+<body>
+    <div class="title">
+        <h1 >ԽԱՉԲԱՌ | PRE-ALPHA v1</h1>
+        <!-- <h4>&#169 MillKeny 2023</h4> -->
+        <h2 id="hed"></h2>  
+        <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
+        <br>
+        <input type="text" id="rifmi" placeholder="Ձեր Բառը" style="width: 500px;" class="search">
+        <!-- <input type="number" id="cnt" placeholder="Տողերի Քանակը" class="count"> -->
+        <br>
+        <div>
+            <button onclick="xach(document.getElementById('rifmi').value)" class="srchd" class="dropbtn">Գտնել</button>
+            
+            <!-- <input type="checkbox" id="ankapv"> -->
+            <!-- <h3 class="srchd">Անկապ Հորինում</h3> -->
+        </div>
+    </div>
+    <h2 id="info" class="ftitle">Գրեք ձեր բառը</h2>
+    <h2 id="finded" class="ftitle">-</h2>
+
+    <script>
+        function setid(id, txt){
+            document.getElementById(id).innerHTML = txt;
+        }
+        function getid(id){
+            return document.getElementById(id).value
+        }
+        function knowid(id){
+            return document.getElementById(id)
+        }
+        bars = window.bars;
+        verbs = window.verbs;
+        nouns = window.nouns;
+        adjs = window.adjs;
+        bars.push(...verbs);
+        bars.push(...nouns);
+        bars.push(...adjs);
+        texts = window.texts;
+        setid("hed", "Պարունակում է " + bars.length + " Բառ"); 
+        var rnda = [];
+        var rndw = "";
+        function randome(arr){
+            return arr[Math.floor(Math.random()*arr.length)]
+        }
+        function replaceCharacter(string, index, replacement) {
+            return (
+                string.slice(0, index) +
+                replacement +
+                string.slice(index + replacement.length)
+            );
+        }
+
+        function xach(wrd){
+            wrd = wrd.split('');
+            var clwrd = [];
+            var out = [];
+            for(var i = 0; i < wrd.length; i++){
+                if(wrd[i] != "-") clwrd.push(wrd[i]);
+            }
+            for(var i = 0; i < bars.length; i++){
+                if(bars[i].length == wrd.length){
+                    var score = 0;
+                    for(var j = 0; j < wrd.length; j++){
+                        if(wrd[j] != "-") {
+                            if(bars[i][j] == wrd[j]) score++;
+                        }
+                    }
+                    if(score == clwrd.length) out.push(bars[i]);
+                }
+            }
+            var outt = "";
+            for(i in out){
+                outt += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + out[i].toLowerCase() + '">' + out[i].toLowerCase() + '</a><br>';
+                
+            }
+            setid("finded", outt)
+            setid("info", "Գտնվեց " + out.length + " բառ")
+            if(outt == "") {
+                setid("info", "Բառեր չգտնվեցին")
+                setid("finded", "-")
+            }
+            if(getid("rifmi") == "") {
+                setid("info", "Գրեք ձեր բառը")
+                setid("finded", "-")
+            }
+        }
+        
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <h1 style="text-shadow: 1px 3px 6px rgb(255, 255, 255); font-weight: 1000;">MillKeny-ի Անիմաստ Հայերեն Բառարանի Ծրագրեր (անճաշակ դիզայնով)</h1>
+    <button class="hdr" onclick="location.href='index.html'">Հանգեր</button>
+    <button class="hdr" onclick="location.href='mostfreq.html'">Ամենատարածվածներ</button>
+    <button class="hdr" onclick="location.href='writer.html'">Պոետ</button>
+    <button class="hdr" onclick="location.href='xach.html'">ԽԱՉԲԱՌ</button>
+</header>
+<head>
+<meta charset="UTF-8">
+<!-- <script type="text/javascript" src="script.js"></script>-->
+<script type="text/javascript" src="dict.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<title>Պոետ</title>
+<link rel="icon" type="image/x-icon" href="dictionary.png">
+
+</head>
+<body>
+    <div class="title">
+        <h1 >ՀԱՅԵՐԵՆ ԱՆԿԱՊ ՊՈԵՏ | PRE-ALPHA v1</h1>
+        <!-- <h4>&#169 MillKeny 2023</h4> -->
+        <h2 id="hed"></h2>
+        <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
+        <br>
+        <input type="text" id="rifmi" placeholder="Ձեր Տողը" style="width: 500px;" class="search">
+        <input type="number" id="cnt" placeholder="Տողերի Քանակը" class="count">
+        <br>
+        <div>
+            <button onclick="writer(document.getElementById('rifmi').value.toLowerCase(), document.getElementById('cnt').value)" class="srchd" class="dropbtn">Հորինել</button>
+            
+            <!-- <input type="checkbox" id="ankapv"> -->
+            <!-- <h3 class="srchd">Անկապ Հորինում</h3> -->
+        </div>
+    </div>
+    <h2 id="finded" class="ftitle">-</h2>
+
+    <script>
+        function setid(id, txt){
+            document.getElementById(id).innerHTML = txt;
+        }
+        function getid(id){
+            return document.getElementById(id).value
+        }
+        function knowid(id){
+            return document.getElementById(id)
+        }
+        bars = window.bars;
+        verbs = window.verbs;
+        nouns = window.nouns;
+        adjs = window.adjs;
+        bars.push(...verbs);
+        bars.push(...nouns);
+        bars.push(...adjs);
+        texts = window.texts;
+        setid("hed", "Պարունակում է " + bars.length + " Բառ"); 
+        var rnda = [];
+        var rndw = "";
+
+        var isankap = 0;
+
+        function getrifm(bar, dict, cnt){
+            var out = ""
+            var temp = []
+            var tout = false
+            var cc = 0;
+            var vgood = 0;
+            var good = 0;
+            var norm = 0;
+            var other = 0;
+            var lcnt = 0;
+    
+            // if(knowid("ankapv").checked == true){
+            //     isankap = 1;
+            // }
+    
+            for(var lx = bar.length-1+isankap; lx > 1 - isankap; lx--){
+                var barl = bar.slice(-lx)
+                for(var x = 0; x < dict.length; x++){
+                    if(dict[x].slice(-lx) == barl && temp.includes(dict[x]) == false && dict[x] != bar) {
+                        temp.push(dict[x]);
+                        tout = true
+                        if(cnt != 0) lcnt++;
+                        rnda.push(dict[x]);
+                    }
+                    
+                    if(cnt != 0 && lcnt==cnt) break;
+                }
+                if(cnt != 0 && lcnt==cnt) break;
+            }
+        }
+        function randome(arr){
+            return arr[Math.floor(Math.random()*arr.length)]
+        }
+        function replaceCharacter(string, index, replacement) {
+            return (
+                string.slice(0, index) +
+                replacement +
+                string.slice(index + replacement.length)
+            );
+        }
+        var outt = "";
+        var globalcnt = 0;
+        function writer(sent, cnt){
+            if(sent.includes("քեզ իմ անգին")){
+                outt+=sent+"<hr> գդալով տամ քո գանգին"
+            } else {
+                outt = ""
+                isankap = 0
+                globalcnt = cnt;
+                outt+=sent+"<hr>"
+                var nax = sent;
+                for(var x = 0; x < cnt; x++){
+                    nax = writero(nax);
+                    outt+=nax+"<hr>"
+                }
+            }
+            setid("finded", outt)
+            outt = ""
+        }
+        
+        function writero(sent){
+            // knowid("ankapv").checked = true;
+            rnda = [];
+            users = sent.split(' ');
+            var lwrd = users[users.length-1];
+            getrifm(lwrd, bars, 50);
+
+            if(rnda.length < globalcnt) {
+                isankap = 1
+                getrifm(lwrd, bars, 50);
+            }
+
+            var rndw = randome(rnda);
+            const index = rnda.indexOf(rndw);
+            if (index > -1) {
+                rnda.splice(index, 1);
+            }
+            var rndv = randome(verbs);
+            if(rndv[rndv.length-2] == 'ե') rndv = replaceCharacter(rndv, rndv.length-1, 'ց');
+            return randome(nouns) + "ը" + " " + rndv + " " + rndw;
+        }
+        function wrdl(){
+            var wordslen = 0;
+            for(var i = 1; i <= bars.length-1; i++){
+                wordslen+=bars[i].length;
+            }
+            console.log(wordslen, bars.length)
+            console.log(wordslen / bars.length)
+        }
+    </script>
+
+</body>
+</html>

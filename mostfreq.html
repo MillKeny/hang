@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <h1 style="text-shadow: 1px 3px 6px rgb(255, 255, 255); font-weight: 1000;">MillKeny-ի Անիմաստ Հայերեն Բառարանի Ծրագրեր (անճաշակ դիզայնով)</h1>
+    <button class="hdr" onclick="location.href='index.html'">Հանգեր</button>
+    <button class="hdr" onclick="location.href='mostfreq.html'">Ամենատարածվածներ</button>
+    <button class="hdr" onclick="location.href='writer.html'">Պոետ</button>
+    <button class="hdr" onclick="location.href='xach.html'">ԽԱՉԲԱՌ</button>
+</header>
+<head>
+<meta charset="UTF-8">
+<!-- <script type="text/javascript" src="script.js"></script>-->
+<script type="text/javascript" src="texts.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<title>Ամենատարածվածներ</title>
+<link rel="icon" type="image/x-icon" href="dictionary.png">
+
+</head>
+<body>
+    <div class="title">
+        <h1 >ՀԱՅԵՐԵՆԻ ԱՄԵՆԱՇԱՏ ՕԳՏԱԳՈՐԾՎՈՂ ԲԱՌԵՐԸ ԵՎ ՏԱՌԵՐԸ | ALPHA v3</h1>
+        <!-- <h4>&#169 MillKeny 2023</h4> -->
+        <h2 id="hed"></h2>
+        <div class="dzma">
+            <h2 id="words"></h2>
+            <h2 id="letters"></h2>
+        </div>
+    </div>
+
+    <script>
+        function setid(id, txt){
+            document.getElementById(id).innerHTML = txt;
+        }
+        function getid(id){
+            return document.getElementById(id).value
+        }
+        function knowid(id){
+            return document.getElementById(id)
+        }
+        texts = window.texts;
+        var letters = ["ա","բ","ց","դ","ե","ֆ","գ","հ","ի","ջ","կ","լ","մ","ն","օ","պ","ք","ր","ս","տ","ւ","վ","ո","խ","յ","զ", "Ը","Ծ","Ռ","Չ","Փ","Շ","Ձ","Է","Թ","Ճ","Ժ","Ղ", "ը","ծ","ռ","չ","փ","շ","ձ","է","թ","ճ","ժ","ղ", "Ա","Բ","Ց","Դ","Ե","Ֆ","Գ","Հ","Ի","Ջ","Կ","Լ","Մ","Ն","Օ","Պ","Ք","Ր","Ս","Տ","Ւ","Վ","Ո","Խ","Յ","Զ", "և"];
+        function comm(){
+            const str = texts.toLowerCase();
+            const num = 210;
+            const findMostFrequent = (str = '', num = 1) => {
+                const strArr = str.split(' ');
+                const map = {};
+                strArr.forEach(word => {
+                    if(map.hasOwnProperty(word)){
+                        map[word]++;
+                    }else{
+                        map[word] = 1;
+                    }
+                });
+                const frequencyArr = Object.keys(map).map(key => [key, map[key]]);
+                frequencyArr.sort((a, b) => b[1] - a[1]);
+                return frequencyArr.slice(0, num).map(el => el[0]);
+            };
+            return findMostFrequent(str, num);
+        }
+        var wordsa = comm();
+        var wordso = "ԲԱՌԵՐԸ ԸՍՏ ՕԳՏԱԳՈՐԾՄԱՆ ՀԱՃԱԽՈՒԹՅԱՆ<hr>";
+        var na = 0;
+        var ma = 200;
+        var nu = 1;
+        while(na < ma){
+            if(wordsa[na] == "" || wordsa[na] == null || wordsa[na] == undefined || [...wordsa[na]].length < 2) {
+                ma++;
+                na++;
+                continue;
+            }
+            wordso+=nu + ". " + wordsa[na] + "<br>"
+            nu++;
+            na++;
+        }
+        setid("words", wordso);
+        
+        setid("hed", "Պարունակում է ~" + texts.split(' ').length + " Բառ"); 
+
+        function letter(){
+            const str = texts.toLowerCase();
+            const num = 100;
+            const findMostFrequent = (str = '', num = 1) => {
+                const strArr = str.split('');
+                const map = {};
+                strArr.forEach(word => {
+                    if(map.hasOwnProperty(word)){
+                        map[word]++;
+                    }else{
+                        map[word] = 1;
+                    }
+                });
+                const frequencyArr = Object.keys(map).map(key => [key, map[key]]);
+                frequencyArr.sort((a, b) => b[1] - a[1]);
+                return frequencyArr.slice(0, num).map(el => el[0]);
+            };
+            var outt = findMostFrequent(str, num);
+            var outf = [];
+            for(var i=0; i < outt.length;i++) {
+		        for(var j=0; j < letters.length;j++) {
+                    if (outt[i] === letters[j]) outf.push(outt[i]);
+                }
+            }
+            return outf;
+        }
+        var leta = letter();
+        var leto = "ՏԱՌԵՐԸ ԸՍՏ ՕԳՏԱԳՈՐԾՄԱՆ ՀԱՃԱԽՈՒԹՅԱՆ<hr>";
+        for(var i = 0; i <= 38; i++){
+            leto+=i+1 + ". " + leta[i] + "<br>"
+        }
+        setid("letters", leto);
+
+        function tdev(inp){
+            var n = 0;
+            var m = 10;
+            var datab = texts.split(' ');
+            var fnded = (element) => element == inp;
+            fnded = datab.findIndex(fnded)
+            console.log(fnded);
+            while(n < m){
+                if(datab[fnded+n] == "") {
+                    m++;
+                    n++;
+                    continue;
+                }
+                console.log(datab[fnded+n]);
+                n++;
+            }
+        }
+
+    </script>
+
+</body>
+</html>
