@@ -6,6 +6,7 @@
     <button class="hdr" onclick="location.href='mostfreq.html'">Ամենատարածվածներ</button>
     <button class="hdr" onclick="location.href='writer.html'">Պոետ</button>
     <button class="hdr" onclick="location.href='xach.html'">ԽԱՉԲԱՌ</button>
+    <button class="hdr" onclick="location.href='dic.html'">Որոնում</button>
 </header>
 <head>
 <meta charset="UTF-8">
@@ -19,7 +20,7 @@
 </head>
 <body>
     <div class="title">
-        <h1 >ՀԱՅԵՐԵՆԻ ԱՄԵՆԱՇԱՏ ՕԳՏԱԳՈՐԾՎՈՂ ԲԱՌԵՐԸ ԵՎ ՏԱՌԵՐԸ | ALPHA v3</h1>
+        <h1 >ՀԱՅԵՐԵՆԻ ԱՄԵՆԱՇԱՏ ՕԳՏԱԳՈՐԾՎՈՂ ԲԱՌԵՐԸ ԵՎ ՏԱՌԵՐԸ | BETA v4</h1>
         <!-- <h4>&#169 MillKeny 2023</h4> -->
         <h2 id="hed"></h2>
         <div class="dzma">
@@ -39,6 +40,7 @@
             return document.getElementById(id)
         }
         texts = window.texts;
+        texts = texts.toLowerCase();
         var letters = ["ա","բ","ց","դ","ե","ֆ","գ","հ","ի","ջ","կ","լ","մ","ն","օ","պ","ք","ր","ս","տ","ւ","վ","ո","խ","յ","զ", "Ը","Ծ","Ռ","Չ","Փ","Շ","Ձ","Է","Թ","Ճ","Ժ","Ղ", "ը","ծ","ռ","չ","փ","շ","ձ","է","թ","ճ","ժ","ղ", "Ա","Բ","Ց","Դ","Ե","Ֆ","Գ","Հ","Ի","Ջ","Կ","Լ","Մ","Ն","Օ","Պ","Ք","Ր","Ս","Տ","Ւ","Վ","Ո","Խ","Յ","Զ", "և"];
         function comm(){
             const str = texts.toLowerCase();
@@ -62,7 +64,7 @@
         var wordsa = comm();
         var wordso = "ԲԱՌԵՐԸ ԸՍՏ ՕԳՏԱԳՈՐԾՄԱՆ ՀԱՃԱԽՈՒԹՅԱՆ<hr>";
         var na = 0;
-        var ma = 200;
+        var ma = 150;
         var nu = 1;
         while(na < ma){
             if(wordsa[na] == "" || wordsa[na] == null || wordsa[na] == undefined || [...wordsa[na]].length < 2) {
@@ -70,13 +72,14 @@
                 na++;
                 continue;
             }
-            wordso+=nu + ". " + wordsa[na] + "<br>"
+            wordso+=nu + ". " + wordsa[na] + wrdc(wordsa[na]) + "<br>"
             nu++;
             na++;
         }
         setid("words", wordso);
         
-        setid("hed", "Պարունակում է ~" + texts.split(' ').length + " Բառ"); 
+        var parunak = texts.split(' ').length;
+        setid("hed", "Պարունակում է ~" + parunak + " Բառ"); 
 
         function letter(){
             const str = texts.toLowerCase();
@@ -127,6 +130,14 @@
                 console.log(datab[fnded+n]);
                 n++;
             }
+        }
+
+
+        function wrdc(str){
+            
+            var temp = " " + str + " ";
+            var count = texts.split(temp).length - 1;
+            return " | " + count;
         }
 
     </script>
