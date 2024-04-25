@@ -115,11 +115,11 @@ body {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 25px;
+    font-size: 19px;
     margin: 4px 2px;
     transition-duration: 0.1s;
     cursor: pointer;
-    border-radius: 1px;
+    border-radius: 0px;
 }
 
 .dzma {

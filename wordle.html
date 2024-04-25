@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<header>
+</header>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="dict.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<title>ՀԱՅԵՐԵՆ WORDLE</title>
+<link rel="icon" type="image/x-icon" href="dictionary.png">
+
+</head>
+<body>
+    <div class="title">
+        <h1 >ՀԱՅԵՐԵՆ WORDLE</h1>
+        <h2 id="hed"></h2>  
+        <input type="text" id="rifmi" placeholder="" style="width: 500px;" class="search" onchange="">
+        <input type="number" id="cnt" placeholder="Փորձերի Քանակը" class="count" value="6">
+        <input type="number" id="cntt" placeholder="Տառերի Քանակ" class="count" value="5">
+        <br>
+        <button onclick="wordle(document.getElementById('rifmi').value)" class="srchd" class="dropbtn">Գուշակել</button>
+        <br>
+    </div>
+    <h2 id="tarer" class="ftitle"></h2>
+    <h1 id="wrd" class="ftitle">Գրեք ձեր տարբերակը</h1>
+    <h2 id="finded" class="ftitle">-</h2>
+
+    <script>
+        function setid(id, txt){
+            document.getElementById(id).innerHTML = txt;
+        }
+        function getid(id){
+            return document.getElementById(id).value
+        }
+        function knowid(id){
+            return document.getElementById(id)
+        }
+        bars = window.bars;
+        console.log(bars.length);
+        verbs = window.verbs;
+        nouns = window.nouns;
+        adjs = window.adjs;
+        bars.push(...verbs);
+        bars.push(...nouns);
+        bars.push(...adjs);
+        console.log(bars.length);
+        function randome(arr){
+            return arr[Math.floor(Math.random()*arr.length)]
+        }
+        function replaceCharacter(string, index, replacement) {
+            return (
+                string.slice(0, index) +
+                replacement +
+                string.slice(index + replacement.length)
+            );
+        }
+
+        var alphabet = ["ա","բ","գ","դ","ե","զ","է","ը","թ","ժ","ի","լ","խ","ծ","կ","հ","ձ","ղ","ճ","մ","յ","ն","շ","ո","չ","պ","ջ","ռ","ս","վ","տ","ր","ց","ւ","փ","ք","և","օ","ֆ"];
+
+        function setarr(id, arr){
+            var tmp = "";
+            for(var i = 0; i < arr.length; i++){
+                tmp += arr[i]
+            }
+            setid(id, tmp);
+        }
+
+        setarr("tarer", alphabet);
+
+        var barer = [];
+        var barsu = "";
+        var barl = getid("cntt");
+            
+        var rword = "";
+        var sword = "";
+        var disc = "";
+        var tdisc = [];
+
+        var tmpalph = ["ա","բ","գ","դ","ե","զ","է","ը","թ","ժ","ի","լ","խ","ծ","կ","հ","ձ","ղ","ճ","մ","յ","ն","շ","ո","չ","պ","ջ","ռ","ս","վ","տ","ր","ց","ւ","փ","ք","և","օ","ֆ"];;
+        var tmpgray = [];
+
+        var fail = false;
+        var fin = false;
+        var tries = 0;
+        var maxtries = getid("cnt");
+        var iw = "";
+        var test = "";
+
+        var input = document.getElementById("rifmi");
+
+        input.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            wordle(document.getElementById('rifmi').value);
+        }
+        });
+
+        function wordle(word){
+            if(getid("cnt") < 1) document.getElementById('cnt').value = 1;
+            if(getid("cntt") < 2) document.getElementById('cntt').value = 2;
+            if(tdisc.length == 0){
+                maxtries = getid("cnt");
+                barl = getid("cntt");
+                barer = [];
+                for(var i = 0; i < bars.length; i++){
+                    barsu = bars[i];
+                    for(var j = 0; j < barsu.length; j++){
+                        if (barsu[j] === "ւ" && barsu[j-1] == 'ո') barsu = barsu.substring(0, j - 1) + barsu.substring(j, barsu.length);
+                        else if (barsu[j] === "ւ" && barsu[j-1] != 'ո') continue;
+                    }
+                    if(barsu.length == barl) barer.push(bars[i]);
+                }
+
+                rword = randome(barer);
+                sword = rword;
+            }
+
+            word = word.toLowerCase();
+            iw = word;
+            for(var j = 0; j < word.length; j++){
+                if (word[j] === "ւ" && word[j-1] == 'ո') word = word.substring(0, j - 1) + word.substring(j, word.length);
+            }
+            for(var j = 0; j < rword.length; j++){
+                if (rword[j] === "ւ" && rword[j-1] == 'ո') rword = rword.substring(0, j - 1) + rword.substring(j, rword.length);
+            }
+            test = word;
+            if(word.length == barl && fin == false && fail == false && barer.includes(iw)){
+                for(j in tmpgray) {
+                    if(tmpalph[j] == tmpgray[j]) {
+                        tmpalph[j] = "<span style='font-size: 35px; color: white; background-color: gray'>" + tmpalph[j] + "</span>";
+                    }
+                }
+
+                for(var i = 0; i < barl; i++){
+                    if (rword.indexOf(word[i]) >= 0) {
+                        if(rword[i] == word[i]) {
+                            disc += "<span style='font-size: 35px; color: white; background-color: green'>" + word[i] + "</span>";
+                            for(j in tmpalph) {
+                                if(tmpalph[j] == word[i]) tmpalph[j] = "<span style='font-size: 35px; color: white; background-color: green'>" + tmpalph[j] + "</span>";
+                            }
+                        }
+                        else {
+                            disc += "<span style='font-size: 35px; color: white; background-color: blue'>" + word[i] + "</span>";
+                            for(j in tmpalph) {
+                                if(tmpalph[j] == word[i]) tmpalph[j] = "<span style='font-size: 35px; color: white; background-color: blue'>" + tmpalph[j] + "</span>";
+                            }    
+                        }
+                    } else {
+                        disc += "<span style='font-size: 35px; color: white; background-color: gray'>" + word[i] + "</span>";
+                        for(j in tmpalph) {
+                            if(tmpalph[j] == word[i]) {
+                                tmpgray.push(tmpalph[j]);
+                                tmpalph[j] = "<span style='font-size: 35px; color: white; background-color: gray'>" + tmpalph[j] + "</span>";
+                            }
+                        }
+                    }
+                }
+                if(word == rword) fin = true;
+                tries++;
+                disc += "<br>";
+                tdisc.push(disc);
+                disc = "";
+            } 
+            else if(word.length != barl && fin == false && fail == false) setid("wrd", "Ձեր բառը պետք է լինի " + barl + " տառանի");
+            else if(!barer.includes(word) && fin == false && fail == false) setid("wrd", "Ձեր բառը չկա բառարանում");
+
+            if(fin == true && tries > 0) {
+                setid("wrd", "Դուք Հաղթեցիք!<br>" + '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + sword.toLowerCase() + '">' + sword.toLowerCase() + "</a><br><button onclick='restart()' class='srchd' class='dropbtn'>Նորից Խաղալ</button><br>")
+                tries = 0;
+            }
+
+            if(tries > maxtries-1 && fail == false && fin == false) {
+                setid("wrd", "Դուք Պարտվեցիք!<br>Ճիշտ պատասխան՝ " + '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + sword.toLowerCase() + '">' + sword.toLowerCase() + "</a><br><button onclick='restart()' class='srchd' class='dropbtn'>Նորից Խաղալ</button><br>")
+                fail = true;
+            }
+
+            for(var i = 0; i < tdisc.length; i++){
+                disc += tdisc[i]
+            }
+            
+            for(var i = 0; i < maxtries - tdisc.length; i++){
+                for(var j = 0; j < barl; j++){
+                    disc += "<span style='font-size: 35px; color: white; background-color: gray'>-</span>";
+                }
+                disc += "<br>";
+            }
+
+            setid("finded", disc)
+            setarr("tarer", tmpalph);
+            disc = "";
+
+            document.getElementById('rifmi').value = "";
+        }
+
+        function restart(){
+            tries = 0;
+            rword = randome(barer);
+            sword = rword;
+            disc = "";
+            tdisc = [];
+            fail = false;
+            fin = false;
+            tmpalph = ["ա","բ","գ","դ","ե","զ","է","ը","թ","ժ","ի","լ","խ","ծ","կ","հ","ձ","ղ","ճ","մ","յ","ն","շ","ո","չ","պ","ջ","ռ","ս","վ","տ","ր","ց","ւ","փ","ք","և","օ","ֆ"];;
+            tmpgray = [];
+            setid("wrd", "Գրեք ձեր տարբերակը")
+            setid("finded", "-")
+            setarr("tarer", alphabet);
+        }
+        
+        
+    </script>
+
+</body>
+</html>
