@@ -17,10 +17,17 @@
         <h1 >ՀԱՅԵՐԵՆ WORDLE</h1>
         <h2 id="hed"></h2>  
         <input type="text" id="rifmi" placeholder="" style="width: 500px;" class="search" onchange="">
-        <input type="number" id="cnt" placeholder="Փորձերի Քանակը" class="count" value="6">
-        <input type="number" id="cntt" placeholder="Տառերի Քանակ" class="count" value="5">
+        <div class="dropdown">
+            <button class="srchd" class="dropbtn">Կանոններ․․․</button>
+            <div class="dropdown-content">
+                Փորձերի Քանակը՝
+                <input type="number" id="cnt" placeholder="Փորձերի Քանակը" class="count" value="6">
+                Տառերի Քանակը՝
+                <input type="number" id="cntt" placeholder="Տառերի Քանակ" class="count" value="5">
+            </div>
+        </div>
         <br>
-        <button onclick="wordle(document.getElementById('rifmi').value)" class="srchd" class="dropbtn">Գուշակել</button>
+        <button onclick="wordle(document.getElementById('rifmi').value)" class="srchd" class="dropbtn">Enter</button>
         <br>
     </div>
     <h2 id="tarer" class="ftitle"></h2>
@@ -38,14 +45,12 @@
             return document.getElementById(id)
         }
         bars = window.bars;
-        console.log(bars.length);
         verbs = window.verbs;
         nouns = window.nouns;
         adjs = window.adjs;
         bars.push(...verbs);
         bars.push(...nouns);
         bars.push(...adjs);
-        console.log(bars.length);
         function randome(arr){
             return arr[Math.floor(Math.random()*arr.length)]
         }
@@ -97,7 +102,17 @@
         }
         });
 
+        for(var i = 0; i < maxtries - tdisc.length; i++){
+            for(var j = 0; j < barl; j++){
+                disc += "<span style='font-size: 35px; color: white; background-color: gray'>-</span>";
+            }
+            disc += "<br>";
+        }
+        setid("finded", disc)
+
         function wordle(word){
+            disc = "";
+            
             if(getid("cnt") < 1) document.getElementById('cnt').value = 1;
             if(getid("cntt") < 2) document.getElementById('cntt').value = 2;
             if(tdisc.length == 0){
@@ -189,7 +204,6 @@
 
             setid("finded", disc)
             setarr("tarer", tmpalph);
-            disc = "";
 
             document.getElementById('rifmi').value = "";
         }
@@ -207,6 +221,16 @@
             setid("wrd", "Գրեք ձեր տարբերակը")
             setid("finded", "-")
             setarr("tarer", alphabet);
+        }
+
+        function dlina(itr){
+            for(var j = 0; j < itr; j++){
+                var top = [];
+                for(i in bars){
+                    if(bars[i].length == j) top.push(bars[i]);
+                }
+                console.log(j, top.length);
+            }
         }
         
         

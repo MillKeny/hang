@@ -154,3 +154,7 @@ display: block;
 .dropdown:hover .dropdown-content {
 display: block;
 }
+
+#tarer {
+    letter-spacing: 4px;
+}
