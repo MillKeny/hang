@@ -1,4 +1,5 @@
-https://millkeny.github.io/hanger/
+https://հանգեր.հայ
+(https://millkeny.github.io/hanger)
 
 Հայերեն Բառերի և Բառարանի հետ կապված տարբեր հետաքրքիր ծրագրեր և խաղեր
 
