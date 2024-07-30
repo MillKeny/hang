@@ -14,16 +14,19 @@
 </head>
 <body>
     <div class="title">
-        <h1 >ՀԱՅԵՐԵՆ ԲԱՌԵՐԻ ՈՐՈՆՈՒՄ</h1>
+        <h1 >ՀԱՅԵՐԵՆ ԲԱՌԵՐԻ ՈՐՈՆՈՒՄ | v2 (07.2024)</h1>
         <!-- <h4>&#169 MillKeny 2023</h4> -->
         <h2 id="hed"></h2>  
         <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
         <br>
-        <input type="text" id="rifmi" placeholder="Որոնում" style="width: 500px;" class="search" onchange="voronel(document.getElementById('rifmi').value)">
+        <input type="text" id="rifmi" placeholder="Պարունակում է․․․" style="width: 350px;" class="search" onchange="voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value)">
+        <input type="text" id="start" placeholder="Սկսվում է․․․" style="width: 250px;" class="startl" onchange="voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value)">
+        <input type="text" id="end" placeholder="Վերջանում է․․․" style="width: 250px;" class="startl" onchange="voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value)">
         <!-- <input type="number" id="cnt" placeholder="Տողերի Քանակը" class="count"> -->
         <!-- <button onclick="voronel(document.getElementById('rifmi').value)" class="srchd" class="dropbtn">Գտնել</button> -->
         <br>
     </div>
+    <h2 id="findc" class="ftitle">-</h2>
     <h2 id="finded" class="ftitle">-</h2>
 
     <script>
@@ -58,16 +61,69 @@
             );
         }
 
-        function voronel(substring){
-            if(substring.length > 0){
+        function voronel(substring, start, end){
+            substring = substring.toLowerCase()
+            start = start.toLowerCase()
+            end = end.toLowerCase()
+            console.log(substring, start, end)
+            if(substring.length > 0 || start.length > 0 || end.length > 0){
                 var finded = "";
+                var findc = 0;
                 for(var i = 0; i < bars.length; i++){
-                    if (bars[i].indexOf(substring) >= 0) {
-                        finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                    if(end != "" && start != ""){
+                        if(bars[i].substring(0, start.length) == start && bars[i].slice(-end.length) == end ){
+                            if (substring != "") {
+                                if(bars[i].indexOf(substring) >= 0){
+                                    findc++;
+                                    finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                }
+                            } else {
+                                findc++;
+                                finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                            }
+                        }
+                    }
+                    else if(start != "" && bars[i].substring(0, start.length) == start){
+                        if (substring != "") {
+                                if(bars[i].indexOf(substring) >= 0){
+                                    findc++;
+                                    finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                }
+                            } else {
+                                findc++;
+                                finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                            }
+                    }
+                    else if(end != "" && bars[i].slice(-end.length) == end){
+                        if (substring != "") {
+                                if(bars[i].indexOf(substring) >= 0){
+                                    findc++;
+                                    finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                }
+                            } else {
+                                findc++;
+                                finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                            }
+                    }
+                    else if(end == "" && start == "") {
+                        if (substring != "") {
+                                if(bars[i].indexOf(substring) >= 0){
+                                    findc++;
+                                    finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                }
+                            } else {
+                                findc++;
+                                finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                            }
                     }
                 }
-                setid("finded", finded);
-            } else setid("finded", "Դաշտը դատարկ է");
+                setid("findc", "Գտնվեց " + findc + " բառ")
+                if(finded != "") setid("finded", finded);
+                else setid("finded", "-");
+            } else {
+                setid("findc", "Դաշտը դատարկ է")
+                setid("finded", "-")
+            };
         }
         
     </script>

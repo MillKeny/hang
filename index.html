@@ -14,12 +14,12 @@
 </head>
 <body>
     <div class="title">
-        <h1 >ՀԱՅԵՐԵՆ ՀԱՆԳԵՐԻ ԳԵՆԵՐԱՏՈՐ | BETA v4</h1>
+        <h1 >ՀԱՅԵՐԵՆ ՀԱՆԳԵՐԻ ԳԵՆԵՐԱՏՈՐ | BETA v5 (07.2024)</h1>
         <h2 id="hed"></h2>
         <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
         <br>
         <input type="text" id="rifmi" placeholder="Բառը" class="search">
-        <input type="number" id="cnt" placeholder="Քանակը" class="count">
+        <input type="number" id="cnt" placeholder="Քանակը" class="count" value="150">
         <input type="text" id="startl" placeholder="Սկսվում է..." class="startl">
         <br>
         <div>
@@ -34,6 +34,8 @@
                 </div>
             </div>  
             
+            <input type="checkbox" id="yndv">
+            <h3 class="srchd">Ընդլայնված Որոնում</h3>
             <input type="checkbox" id="ankapv">
             <h3 class="srchd">Անկապ Որոնում</h3>
         </div>
@@ -59,6 +61,7 @@
         bars.push(...verbs);
         bars.push(...nouns);
         bars.push(...adjs);
+        knowid("yndv").checked = true;
         texts = window.texts;
         setid("hed", "Պարունակում է " + bars.length + " Բառ"); 
         function getb() {
@@ -76,6 +79,21 @@
         }
         var rnda = [];
         var rndw = "";
+
+        var simil = [
+            ["ր", "ռ"],
+            ["գ", "կ", "ք"],
+            ["բ", "պ", "փ"],
+            ["ձ", "ծ", "ց"],
+            ["ջ", "ճ", "չ"],
+            ["ժ", "շ"],
+            ["մ", "ն"],
+            ["ղ", "խ"],
+            ["վ", "ֆ"],
+            ["դ", "թ", "տ"],
+            ["է", "ե"]
+        ]
+
         function getrifm(bar, dict, cnt){
             var out = ""
             var temp = []
@@ -87,31 +105,47 @@
             var other = 0;
             var lcnt = 0;
             var isankap = 0;
+            var isynd = 0;
     
             if(knowid("ankapv").checked == true){
                 isankap = 1;
             }
+
+            if(knowid("yndv").checked == true){
+                isynd = 1;
+            }
     
             for(var lx = bar.length-1+isankap; lx > 1 - isankap; lx--){
                 var barl = bar.slice(-lx)
+                var ending = [barl.slice(-1)]
+                if(isynd == 1){
+                    for(var sx = 0; sx < simil.length; sx++){
+                        if(simil[sx].includes(barl.slice(-1))) ending = simil[sx]
+                    }
+                }
                 for(var x = 0; x < dict.length; x++){
-                    if(dict[x].slice(-lx) == barl && temp.includes(dict[x]) == false && dict[x] != bar) {
-                        if(getid("startl") == ""){
-                            out += '<a style="color: rgb(0,' + (180 - (cc * 30)).toString() + ', 0); text-shadow: 0px 1px 2px gray;" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a>';
-                            out += "<br>"
-                            temp.push(dict[x]);
-                            tout = true
-                            if(cnt != 0) lcnt++;
-                            rnda.push(dict[x]);
-                        } else {
-                            if(dict[x].substring(0, getid("startl").length) == getid("startl").toLowerCase()){
-                                out += '<a style="color: rgb(0,' + (180 - (cc * 30)).toString() + ', 0); text-shadow: 0px 1px 2px gray;" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a>';
-                                out += "<br>"
-                                temp.push(dict[x]);
-                                temp.sort();
-                                tout = true
-                                if(cnt != 0) lcnt++;
-                                rnda.push(dict[x]);
+                    if(temp.includes(dict[x]) == false && dict[x] != bar){
+                        for(var sx = 0; sx < ending.length; sx++){
+                            barl = barl.replace(/.$/,ending[sx])
+                            if(dict[x].slice(-lx) == barl) {
+                                if(getid("startl") == ""){
+                                    out += '<a style="color: rgb(0,' + (180 - (cc * 30)).toString() + ', 0); text-shadow: 0px 1px 2px gray;" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a>';
+                                    out += "<br>"
+                                    temp.push(dict[x]);
+                                    tout = true
+                                    if(cnt != 0) lcnt++;
+                                    rnda.push(dict[x]);
+                                } else {
+                                    if(dict[x].substring(0, getid("startl").length) == getid("startl").toLowerCase()){
+                                        out += '<a style="color: rgb(0,' + (180 - (cc * 30)).toString() + ', 0); text-shadow: 0px 1px 2px gray;" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a>';
+                                        out += "<br>"
+                                        temp.push(dict[x]);
+                                        temp.sort();
+                                        tout = true
+                                        if(cnt != 0) lcnt++;
+                                        rnda.push(dict[x]);
+                                    }
+                                }
                             }
                         }
                     }
@@ -133,7 +167,7 @@
                 if(getid("rifmi") != ''){
                     setid("finded", 'Հանգեր Չգտնվեցին');
                     setid("rif", '-')
-                    setid("wrd", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").value.toLowerCase() + '</a>');
+                    setid("wrd", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a>');
                 } else {
                     setid("finded", 'Գրեք Ձեր Բառը');
                     setid("rif", '-')
@@ -142,7 +176,8 @@
             } else {
                 setid("rif", out)
                 setid("wrd", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a>')
-                setid("finded", 'Գտնվեց ' + (out.split('<br>').length-1) + ' Բառ<br>Շատ Լավ՝ ' + vgood.toString() + '  |  Լավ՝ ' + good.toString() + '  |  Նորմալ՝ ' + norm.toString() + '  |  Մնացածը՝ ' + other.toString());
+                //setid("finded", 'Գտնվեց ' + (out.split('<br>').length-1) + ' Բառ<br>Շատ Լավ՝ ' + vgood.toString() + '  |  Լավ՝ ' + good.toString() + '  |  Նորմալ՝ ' + norm.toString() + '  |  Մնացածը՝ ' + other.toString());
+                setid("finded", 'Գտնվեց ' + (out.split('<br>').length-1) + ' Բառ');
             }
         }
         function randome(arr){
