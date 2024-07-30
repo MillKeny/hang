@@ -54,6 +54,7 @@
         function knowid(id){
             return document.getElementById(id)
         }
+        
         bars = window.bars;
         verbs = window.verbs;
         nouns = window.nouns;
@@ -64,6 +65,7 @@
         knowid("yndv").checked = true;
         texts = window.texts;
         setid("hed", "Պարունակում է " + bars.length + " Բառ"); 
+        
         function getb() {
             getrifm(getid("rifmi").toLowerCase(), bars, getid("cnt"))
         }
