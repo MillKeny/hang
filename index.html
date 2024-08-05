@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
-<header>
-</header>
-<head>
-<meta charset="UTF-8">
-<script type="text/javascript" src="script.js"></script>
-<script type="text/javascript" src="dict.js"></script>
-<link rel="stylesheet" href="style.css">
 
-<title>Հայերեն Հանգեր</title>
-<link rel="icon" type="image/x-icon" href="dictionary.png">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="x-icon" href="icon.png">
+    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="dict.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <title>Հայերեն Հանգեր</title>
 
 </head>
+
 <body>
     <div class="title">
-        <h1 >ՀԱՅԵՐԵՆ ՀԱՆԳԵՐԻ ԳԵՆԵՐԱՏՈՐ | BETA v5 (07.2024)</h1>
+        <h1>ՀԱՅԵՐԵՆ ՀԱՆԳԵՐԻ ԳԵՆԵՐԱՏՈՐ | BETA v5 (08.2024)</h1>
         <h2 id="hed"></h2>
         <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
         <br>
@@ -23,38 +23,48 @@
         <input type="text" id="startl" placeholder="Սկսվում է..." class="startl">
         <br>
         <div>
-            <h1 class="srchd">Որոնել.</h1>
-            <button onclick="getb()" class="srchd">Բոլորը</button>
+            <button onclick="getb()" class="srchd">Գտնել</button>
             <div class="dropdown">
                 <button class="srchd" class="dropbtn">Այլ․․․</button>
                 <div class="dropdown-content">
+                    <div>
+                        <label class="toggler-wrapper style-1">
+                            <input type="checkbox" id="yndv">
+                            <div class="toggler-slider">
+                                <div class="toggler-knob"></div>
+                                <div class="badge">Ընդլայնված Որոնում</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="toggler-wrapper style-1">
+                            <input type="checkbox" id="ankapv">
+                            <div class="toggler-slider">
+                                <div class="toggler-knob"></div>
+                                <div class="badge">Անկապ Որոնում</div>
+                            </div>
+                        </label>
+                    </div>
                     <button class="srchd" id="getbn" onclick="getbn()">Գոյականներ</button>
                     <button class="srchd" id="getbv" onclick="getbv()">Բայեր</button>
                     <button class="srchd" id="getbv" onclick="getba()">Ածականներ</button>
                 </div>
-            </div>  
-            
-            <input type="checkbox" id="yndv">
-            <h3 class="srchd">Ընդլայնված Որոնում</h3>
-            <input type="checkbox" id="ankapv">
-            <h3 class="srchd">Անկապ Որոնում</h3>
+            </div>
         </div>
     </div>
     <h2 id="finded" class="ftitle">Գրեք Ձեր Բառը</h2>
-    <h1 id="wrd" class="ftitle">-</h1>
     <h2 id="rif" class="rtitle">-</h2>
 
     <script>
-        function setid(id, txt){
+        function setid(id, txt) {
             document.getElementById(id).innerHTML = txt;
         }
-        function getid(id){
+        function getid(id) {
             return document.getElementById(id).value
         }
-        function knowid(id){
+        function knowid(id) {
             return document.getElementById(id)
         }
-        
         bars = window.bars;
         verbs = window.verbs;
         nouns = window.nouns;
@@ -64,19 +74,18 @@
         bars.push(...adjs);
         knowid("yndv").checked = true;
         texts = window.texts;
-        setid("hed", "Պարունակում է " + bars.length + " Բառ"); 
-        
+        setid("hed", "Պարունակում է " + bars.length + " Բառ");
         function getb() {
             getrifm(getid("rifmi").toLowerCase(), bars, getid("cnt"))
         }
         function getbn() {
-            getrifm(getid("rifmi").toLowerCase(), nouns, getid("cnt"))  
+            getrifm(getid("rifmi").toLowerCase(), nouns, getid("cnt"))
         }
         function getbv() {
             getrifm(getid("rifmi").toLowerCase(), verbs, getid("cnt"))
         }
         function getba() {
-            if(getid("rifmi").toLowerCase() == "chamoy") window.open('chamoy.mp4');
+            if (getid("rifmi").toLowerCase() == "chamoy") window.open('chamoy.mp4');
             getrifm(getid("rifmi").toLowerCase(), adjs, getid("cnt"))
         }
         var rnda = [];
@@ -93,98 +102,94 @@
             ["ղ", "խ"],
             ["վ", "ֆ"],
             ["դ", "թ", "տ"],
-            ["է", "ե"]
+            ["է", "ե"],
+            ["ս", "զ"]
         ]
 
-        function getrifm(bar, dict, cnt){
-            var out = ""
+        function getrifm(bar, dict, cnt) {
+            var out = "<table>"
             var temp = []
-            var tout = false
-            var cc = 0;
             var vgood = 0;
             var good = 0;
             var norm = 0;
             var other = 0;
-            var lcnt = 0;
+            var lcnt = 1;
             var isankap = 0;
             var isynd = 0;
-    
-            if(knowid("ankapv").checked == true){
+
+            if (knowid("ankapv").checked == true) {
                 isankap = 1;
             }
 
-            if(knowid("yndv").checked == true){
+            if (knowid("yndv").checked == true) {
                 isynd = 1;
             }
-    
-            for(var lx = bar.length-1+isankap; lx > 1 - isankap; lx--){
+
+            for (var lx = bar.length - 1 + isankap; lx > 1 - isankap; lx--) {
                 var barl = bar.slice(-lx)
                 var ending = [barl.slice(-1)]
-                if(isynd == 1){
-                    for(var sx = 0; sx < simil.length; sx++){
-                        if(simil[sx].includes(barl.slice(-1))) ending = simil[sx]
+                if (isynd == 1) {
+                    for (var sx = 0; sx < simil.length; sx++) {
+                        if (simil[sx].includes(barl.slice(-1))) ending = simil[sx]
                     }
                 }
-                for(var x = 0; x < dict.length; x++){
-                    if(temp.includes(dict[x]) == false && dict[x] != bar){
-                        for(var sx = 0; sx < ending.length; sx++){
-                            barl = barl.replace(/.$/,ending[sx])
-                            if(dict[x].slice(-lx) == barl) {
-                                if(getid("startl") == ""){
-                                    out += '<a style="color: rgb(0,' + (180 - (cc * 30)).toString() + ', 0); text-shadow: 0px 1px 2px gray;" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a>';
-                                    out += "<br>"
+                for (var x = 0; x < dict.length; x++) {
+                    if (temp.includes(dict[x]) == false && dict[x] != bar) {
+                        if (dict[x].includes(' ') && !isankap) continue;
+                        for (var sx = 0; sx < ending.length; sx++) {
+                            barl = barl.replace(/.$/, ending[sx])
+                            if (dict[x].slice(-lx) == barl) {
+                                if (getid("startl") == "") {
+                                    if (lcnt == 0) out += "<tr>"
+                                    out += '<td><a target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a></td>';
+                                    if (lcnt % 3 == 0 && lcnt != 0) out += "</tr>";
                                     temp.push(dict[x]);
-                                    tout = true
-                                    if(cnt != 0) lcnt++;
+                                    lcnt++;
                                     rnda.push(dict[x]);
                                 } else {
-                                    if(dict[x].substring(0, getid("startl").length) == getid("startl").toLowerCase()){
-                                        out += '<a style="color: rgb(0,' + (180 - (cc * 30)).toString() + ', 0); text-shadow: 0px 1px 2px gray;" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a>';
-                                        out += "<br>"
+                                    if (dict[x].substring(0, getid("startl").length) == getid("startl").toLowerCase()) {
+                                        if (lcnt == 0) out += "<tr>"
+                                        out += '<td><a target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a></td>';
+                                        if (lcnt % 3 == 0) out += "</tr>";
                                         temp.push(dict[x]);
-                                        temp.sort();
-                                        tout = true
-                                        if(cnt != 0) lcnt++;
+                                        lcnt++;
                                         rnda.push(dict[x]);
                                     }
                                 }
                             }
                         }
                     }
-                    
-                    if(cnt != 0 && lcnt==cnt) break;
+                    if (cnt != 0 && lcnt == cnt) break;
                 }
-                if(tout) {
-                    out += "<hr>";
-                    if(cc == 0) vgood = out.split('<br>').length-1;
-                    else if(cc == 1) good = (out.split('<br>').length-1)-vgood;
-                    else if(cc == 2) norm = ((out.split('<br>').length-1)-vgood)-good;
-                    cc++;
-                }
-                tout = false
-                if(cnt != 0 && lcnt==cnt) break;
+                if (cnt != 0 && lcnt == cnt) break;
             }
-            other = (out.split('<br>').length-1)-(vgood+good+norm);
-            if(out == ""){
-                if(getid("rifmi") != ''){
-                    setid("finded", 'Հանգեր Չգտնվեցին');
+            other = (out.split('<br>').length - 1) - (vgood + good + norm);
+            if (out == "<table>") {
+                if (getid("rifmi") != '') {
+                    knowid("finded").classList.add("shake");
                     setid("rif", '-')
-                    setid("wrd", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a>');
+                    setid("finded", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a><br>' + 'Հանգեր Չգտնվեցին');
                 } else {
+                    knowid("finded").classList.add("shake");
                     setid("finded", 'Գրեք Ձեր Բառը');
                     setid("rif", '-')
-                    setid("wrd", '-')
                 }
             } else {
+                out += "</table>"
                 setid("rif", out)
-                setid("wrd", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a>')
+                setid("finded", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a><br>' + 'Գտնվեց ' + lcnt + ' Բառ')
                 //setid("finded", 'Գտնվեց ' + (out.split('<br>').length-1) + ' Բառ<br>Շատ Լավ՝ ' + vgood.toString() + '  |  Լավ՝ ' + good.toString() + '  |  Նորմալ՝ ' + norm.toString() + '  |  Մնացածը՝ ' + other.toString());
-                setid("finded", 'Գտնվեց ' + (out.split('<br>').length-1) + ' Բառ');
             }
         }
-        function randome(arr){
-            return arr[Math.floor(Math.random()*arr.length)]
+
+        knowid("finded").addEventListener("animationend", function () {
+            knowid("finded").classList.remove("shake");
+        });
+
+        function randome(arr) {
+            return arr[Math.floor(Math.random() * arr.length)]
         }
+
         function replaceCharacter(string, index, replacement) {
             return (
                 string.slice(0, index) +
@@ -192,17 +197,17 @@
                 string.slice(index + replacement.length)
             );
         }
-        function wrdl(){
+
+        function wrdl() {
             var wordslen = 0;
-            for(var i = 1; i <= bars.length-1; i++){
-                wordslen+=bars[i].length;
+            for (var i = 1; i <= bars.length - 1; i++) {
+                wordslen += bars[i].length;
             }
             console.log(wordslen, bars.length)
             console.log(wordslen / bars.length)
         }
-        
-        
     </script>
 
 </body>
+
 </html>

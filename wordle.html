@@ -16,14 +16,16 @@
     <div class="title">
         <h1 >ՀԱՅԵՐԵՆ WORDLE | v1 (05.2024)</h1>
         <h2 id="hed"></h2>  
+        <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
+        <br>
         <input type="text" id="rifmi" placeholder="" style="width: 500px;" class="search" onchange="">
         <div class="dropdown">
             <button class="srchd" class="dropbtn">Կանոններ․․․</button>
             <div class="dropdown-content">
                 Փորձերի Քանակը՝
-                <input type="number" id="cnt" placeholder="Փորձերի Քանակը" class="count" value="6">
+                <input type="number" id="cnt" placeholder="Փորձերի Քանակը" class="count" value="6" onchange="wordle(document.getElementById('rifmi').value)">
                 Տառերի Քանակը՝
-                <input type="number" id="cntt" placeholder="Տառերի Քանակ" class="count" value="5">
+                <input type="number" id="cntt" placeholder="Տառերի Քանակ" class="count" value="5" onchange="wordle(document.getElementById('rifmi').value)">
             </div>
         </div>
         <br>
