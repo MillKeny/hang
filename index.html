@@ -7,9 +7,7 @@
     <script type="text/javascript" src="script.js"></script>
     <script type="text/javascript" src="dict.js"></script>
     <link rel="stylesheet" href="style.css">
-
     <title>Հայերեն Հանգեր</title>
-
 </head>
 
 <body>
@@ -53,17 +51,17 @@
         </div>
     </div>
     <h2 id="finded" class="ftitle">Գրեք Ձեր Բառը</h2>
-    <h2 id="rif" class="rtitle">-</h2>
+    <h2 id="rif" class="rtitle"></h2>
 
     <script>
         function setid(id, txt) {
             document.getElementById(id).innerHTML = txt;
         }
         function getid(id) {
-            return document.getElementById(id).value
+            return document.getElementById(id).value;
         }
         function knowid(id) {
-            return document.getElementById(id)
+            return document.getElementById(id);
         }
         bars = window.bars;
         verbs = window.verbs;
@@ -72,7 +70,6 @@
         bars.push(...verbs);
         bars.push(...nouns);
         bars.push(...adjs);
-        knowid("yndv").checked = true;
         texts = window.texts;
         setid("hed", "Պարունակում է " + bars.length + " Բառ");
         function getb() {
@@ -104,11 +101,19 @@
             ["դ", "թ", "տ"],
             ["է", "ե"],
             ["ս", "զ"]
-        ]
+        ];
+
+        var input = document.body;
+        input.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                getb();
+            }
+        });
 
         function getrifm(bar, dict, cnt) {
-            var out = "<table>"
-            var temp = []
+            var out = "<table>";
+            var temp = [];
             var vgood = 0;
             var good = 0;
             var norm = 0;
@@ -126,18 +131,18 @@
             }
 
             for (var lx = bar.length - 1 + isankap; lx > 1 - isankap; lx--) {
-                var barl = bar.slice(-lx)
-                var ending = [barl.slice(-1)]
+                var barl = bar.slice(-lx);
+                var ending = [barl.slice(-1)];
                 if (isynd == 1) {
                     for (var sx = 0; sx < simil.length; sx++) {
-                        if (simil[sx].includes(barl.slice(-1))) ending = simil[sx]
+                        if (simil[sx].includes(barl.slice(-1))) ending = simil[sx];
                     }
                 }
                 for (var x = 0; x < dict.length; x++) {
                     if (temp.includes(dict[x]) == false && dict[x] != bar) {
                         if (dict[x].includes(' ') && !isankap) continue;
                         for (var sx = 0; sx < ending.length; sx++) {
-                            barl = barl.replace(/.$/, ending[sx])
+                            barl = barl.replace(/.$/, ending[sx]);
                             if (dict[x].slice(-lx) == barl) {
                                 if (getid("startl") == "") {
                                     if (lcnt == 0) out += "<tr>"
@@ -159,35 +164,35 @@
                             }
                         }
                     }
-                    if (cnt != 0 && lcnt == cnt) break;
+                    if (cnt != 0 && lcnt-1 == cnt) break;
                 }
-                if (cnt != 0 && lcnt == cnt) break;
+                if (cnt != 0 && lcnt-1 == cnt) break;
             }
             other = (out.split('<br>').length - 1) - (vgood + good + norm);
             if (out == "<table>") {
                 if (getid("rifmi") != '') {
                     knowid("finded").classList.add("shake");
-                    setid("rif", '-')
+                    setid("rif", '');
                     setid("finded", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a><br>' + 'Հանգեր Չգտնվեցին');
                 } else {
                     knowid("finded").classList.add("shake");
                     setid("finded", 'Գրեք Ձեր Բառը');
-                    setid("rif", '-')
+                    setid("rif", '');
                 }
             } else {
-                out += "</table>"
-                setid("rif", out)
-                setid("finded", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a><br>' + 'Գտնվեց ' + lcnt + ' Բառ')
+                out += "</table>";
+                setid("rif", out);
+                setid("finded", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a><br>' + 'Գտնվեց ' + (lcnt-1) + ' Բառ')
                 //setid("finded", 'Գտնվեց ' + (out.split('<br>').length-1) + ' Բառ<br>Շատ Լավ՝ ' + vgood.toString() + '  |  Լավ՝ ' + good.toString() + '  |  Նորմալ՝ ' + norm.toString() + '  |  Մնացածը՝ ' + other.toString());
             }
+
+            knowid("finded").onanimationend = () => {
+                knowid("finded").classList.remove("shake");
+            };
         }
 
-        knowid("finded").addEventListener("animationend", function () {
-            knowid("finded").classList.remove("shake");
-        });
-
         function randome(arr) {
-            return arr[Math.floor(Math.random() * arr.length)]
+            return arr[Math.floor(Math.random() * arr.length)];
         }
 
         function replaceCharacter(string, index, replacement) {
@@ -199,15 +204,14 @@
         }
 
         function wrdl() {
-            var wordslen = 0;
-            for (var i = 1; i <= bars.length - 1; i++) {
-                wordslen += bars[i].length;
+            var charlen = 0;
+            for (var i = 1; i < bars.length; i++) {
+                charlen += bars[i].length;
             }
-            console.log(wordslen, bars.length)
-            console.log(wordslen / bars.length)
+            console.log("Tarer:", charlen, "Barer:", bars.length);
+            console.log("Mij Erkarutyun:", charlen / bars.length);
         }
     </script>
 
 </body>
-
 </html>

@@ -6,10 +6,6 @@ body {
     margin: 0 auto;
 }
 
-progress {
-    width: 100%;
-}
-
 .title {
     font-family: "Lucida Console", "Courier New", monospace;
     background-color: #1a1a1a;
@@ -42,7 +38,7 @@ progress {
 }
 
 .ftitle.shake {
-    animation: shake 0.2s;
+    animation: shake 0.15s;
 }
 
 @keyframes shake {
@@ -58,6 +54,11 @@ table {
     font-family: sans-serif;
     margin: 0 auto;
     text-align: center;
+}
+
+td {
+    padding-right: 11px;
+    padding-left: 13px;
 }
 
 hr {
@@ -77,7 +78,7 @@ a {
     filter: invert(100%);
     width: 40%;
     padding-top: 10px;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
 }
 
 button {

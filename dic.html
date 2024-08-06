@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="style.css">
 
 <title>ՈՐՈՆՈՒՄ</title>
-<link rel="icon" type="image/x-icon" href="dictionary.png">
+<link rel="shortcut icon" type="x-icon" href="icon.png">
 
 </head>
 <body>
@@ -20,10 +20,9 @@
         <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
         <br>
         <input type="text" id="rifmi" placeholder="Պարունակում է․․․" style="width: 350px;" class="search" onchange="voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value)">
+        <br>
         <input type="text" id="start" placeholder="Սկսվում է․․․" style="width: 250px;" class="startl" onchange="voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value)">
         <input type="text" id="end" placeholder="Վերջանում է․․․" style="width: 250px;" class="startl" onchange="voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value)">
-        <!-- <input type="number" id="cnt" placeholder="Տողերի Քանակը" class="count"> -->
-        <!-- <button onclick="voronel(document.getElementById('rifmi').value)" class="srchd" class="dropbtn">Գտնել</button> -->
         <br>
     </div>
     <h2 id="findc" class="ftitle">-</h2>

@@ -6,15 +6,17 @@ window.onload = function() {
     <div style="text-align: center; padding-bottom: 15px;">
     <button class="hdr" onclick="location.href='index.html'">Հանգեր</button>
     <button class="hdr" onclick="location.href='mostfreq.html'">Ամենատարածվածներ</button>
-    <button class="hdr" onclick="location.href='writer.html'">Պոետ</button>
+    <!-- <button class="hdr" onclick="location.href='writer.html'">Պոետ</button> -->
     <button class="hdr" onclick="location.href='xach.html'">ԽԱՉԲԱՌ</button>
     <button class="hdr" onclick="location.href='dic.html'">Որոնում</button>
     <button class="hdr" onclick="location.href='wordle.html'">WORDLE</button>
+    <button class="hdr" onclick="location.href='mail.html'" style="background-color: black; color: white;">Գրել Նամակ</button>
     </div>
     ${bdctx}
     `;
 
     bd.innerHTML = template;
+    document.getElementById("yndv").checked = true;
 }
 
 //<h1 style="font-family: 'Lucida Console', 'Courier New', monospace; color:rgb(255, 255, 255); text-align: center; font-size: 48px;">հանգեր.հայ</h1>

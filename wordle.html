@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="style.css">
 
 <title>ՀԱՅԵՐԵՆ WORDLE</title>
-<link rel="icon" type="image/x-icon" href="dictionary.png">
+<link rel="shortcut icon" type="x-icon" href="icon.png">
 
 </head>
 <body>
@@ -95,13 +95,12 @@
         var iw = "";
         var test = "";
 
-        var input = document.getElementById("rifmi");
-
+        var input = document.body;
         input.addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            wordle(document.getElementById('rifmi').value);
-        }
+            if (event.key === "Enter") {
+                event.preventDefault();
+                wordle(document.getElementById('rifmi').value);
+            }
         });
 
         for(var i = 0; i < maxtries - tdisc.length; i++){

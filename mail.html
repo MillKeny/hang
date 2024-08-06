@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<header>
+</header>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="dict.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<title>Գրել Նամակ</title>
+<link rel="shortcut icon" type="x-icon" href="icon.png">
+
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "DD5BYOaoo8cKlODAx",
+      });
+   })();
+</script>
+
+</head>
+<body>
+    <div class="title">
+        <h1 >ԳՐԵԼ ՆԱՄԱԿ</h1>
+        <!-- <h4>&#169 MillKeny 2023</h4> -->
+        <h2>Կարող եք գրել E-Mail հենց հիմա՝</h2>
+        <input type="text" id="name" placeholder="Ձեր Անունը" style="width: 300px;">
+        <br>
+        <input type="text" id="email" placeholder="Ձեր E-Mail" style="width: 300px;">
+        <br>
+        <input type="text" id="msg" placeholder="Ձեր Նամակը" style="width: 300px;">
+        <br>
+        <button onclick="sendMail()" class="srchd">Ուղարկել</button>
+        <br>
+        <h2>Կամ գրել անձամբ՝</h2>
+        <a href="mailto:defartyom@gmail.com">defartyom@gmail.com</a>
+    </div>
+
+    <script>
+        function setid(id, txt) {
+            document.getElementById(id).value = txt;
+        }
+        function getid(id) {
+            return document.getElementById(id).value;
+        }
+        const validateEmail = (email) => {
+            return String(email)
+                .toLowerCase()
+                .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+        };
+
+        function sendMail() {    
+            var params = {
+                name: getid("name"),
+                email: getid("email"),
+                msg: getid("msg")
+            };
+
+            const serviceID = "gmail";
+            const templateID = "gmail";
+            
+            if(getid("name") != "" && getid("email") != "" && getid("msg") != ""){
+                if(validateEmail(getid("email"))){
+                    emailjs.send(serviceID, templateID, params)
+                            .then(res=>{
+                                setid("name", "")
+                                setid("email", "")
+                                setid("msg", "")
+                                console.log(res);
+                                alert("Նամակը Ուղարկվեց!")
+
+                            })
+                            .catch(err=>console.log(err));
+                } else alert("Սխալ ձևաչափի E-Mail");
+            } else alert("Լրացրեք բոլոր դաշտերը՝ Նամակ ուղարկելու համար!");
+        }
+    </script>
+
+</body>
+</html>
