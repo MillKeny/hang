@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-<header>
-</header>
+
 <head>
 <meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script type="text/javascript" src="script.js"></script>
 <script type="text/javascript" src="dict.js"></script>
 <link rel="stylesheet" href="style.css">
@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="title">
-        <h1 >ՀԱՅԵՐԵՆ ԲԱՌԵՐԻ ՈՐՈՆՈՒՄ | v2 (07.2024)</h1>
+        <h1 >ՀԱՅԵՐԵՆ ԲԱՌԵՐԻ ՈՐՈՆՈՒՄ | v2 (08.2024)</h1>
         <!-- <h4>&#169 MillKeny 2023</h4> -->
         <h2 id="hed"></h2>  
         <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
@@ -64,7 +64,7 @@
             substring = substring.toLowerCase()
             start = start.toLowerCase()
             end = end.toLowerCase()
-            console.log(substring, start, end)
+            //console.log(substring, start, end)
             if(substring.length > 0 || start.length > 0 || end.length > 0){
                 var finded = "";
                 var findc = 0;
@@ -74,11 +74,11 @@
                             if (substring != "") {
                                 if(bars[i].indexOf(substring) >= 0){
                                     findc++;
-                                    finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                    finded += '<a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
                                 }
                             } else {
                                 findc++;
-                                finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                finded += '<a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
                             }
                         }
                     }
@@ -86,33 +86,33 @@
                         if (substring != "") {
                                 if(bars[i].indexOf(substring) >= 0){
                                     findc++;
-                                    finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                    finded += '<a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
                                 }
                             } else {
                                 findc++;
-                                finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                finded += '<a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
                             }
                     }
                     else if(end != "" && bars[i].slice(-end.length) == end){
                         if (substring != "") {
                                 if(bars[i].indexOf(substring) >= 0){
                                     findc++;
-                                    finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                    finded += '<a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
                                 }
                             } else {
                                 findc++;
-                                finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                finded += '<a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
                             }
                     }
                     else if(end == "" && start == "") {
                         if (substring != "") {
                                 if(bars[i].indexOf(substring) >= 0){
                                     findc++;
-                                    finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                    finded += '<a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
                                 }
                             } else {
                                 findc++;
-                                finded += '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
+                                finded += '<a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + bars[i].toLowerCase() + '">' + bars[i].toLowerCase() + '</a><br>'
                             }
                     }
                 }
@@ -123,6 +123,18 @@
                 setid("findc", "Դաշտը դատարկ է")
                 setid("finded", "-")
             };
+            $('.wiki').map(function() {
+                var id = this
+                getwiki(this.text, function(data) {
+                        var out = '';
+                        for(var y = 0; y < data.length; y++){
+                            if(y != data.length-1) out += data[y] + " | ";
+                            else out += data[y]
+                        }
+                        if(out != '') id.title = out;
+                        else id.title = "Կտցրեք բառին, որպեսզի նայեք նրա էջը Wiktionary-ում";
+                });
+            });
         }
         
     </script>

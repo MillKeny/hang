@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-<header>
-</header>
+
 <head>
 <meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script type="text/javascript" src="script.js"></script>
 <script type="text/javascript" src="dict.js"></script>
 <link rel="stylesheet" href="style.css">
@@ -183,14 +183,27 @@
             else if(!barer.includes(word) && fin == false && fail == false) setid("wrd", "Ձեր բառը չկա բառարանում");
 
             if(fin == true && tries > 0) {
-                setid("wrd", "Դուք Հաղթեցիք!<br>" + '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + sword.toLowerCase() + '">' + sword.toLowerCase() + "</a><br><button onclick='restart()' class='srchd' class='dropbtn'>Նորից Խաղալ</button><br>")
+                setid("wrd", "Դուք Հաղթեցիք!<br>" + '<a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + sword.toLowerCase() + '">' + sword.toLowerCase() + "</a><br><button onclick='restart()' class='srchd' class='dropbtn'>Նորից Խաղալ</button><br>")
                 tries = 0;
             }
 
             if(tries > maxtries-1 && fail == false && fin == false) {
-                setid("wrd", "Դուք Պարտվեցիք!<br>Ճիշտ պատասխան՝ " + '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + sword.toLowerCase() + '">' + sword.toLowerCase() + "</a><br><button onclick='restart()' class='srchd' class='dropbtn'>Նորից Խաղալ</button><br>")
+                setid("wrd", "Դուք Պարտվեցիք!<br>Ճիշտ պատասխան՝ " + '<a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + sword.toLowerCase() + '">' + sword.toLowerCase() + "</a><br><button onclick='restart()' class='srchd' class='dropbtn'>Նորից Խաղալ</button><br>")
                 fail = true;
             }
+
+            $('.wiki').map(function() {
+                var id = this
+                getwiki(this.text, function(data) {
+                        var out = '';
+                        for(var y = 0; y < data.length; y++){
+                            if(y != data.length-1) out += data[y] + " | ";
+                            else out += data[y]
+                        }
+                        if(out != '') id.title = out;
+                        else id.title = "Կտցրեք բառին, որպեսզի նայեք նրա էջը Wiktionary-ում";
+                });
+            });
 
             for(var i = 0; i < tdisc.length; i++){
                 disc += tdisc[i]

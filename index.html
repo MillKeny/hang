@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" type="x-icon" href="icon.png">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script type="text/javascript" src="script.js"></script>
     <script type="text/javascript" src="dict.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -12,12 +13,12 @@
 
 <body>
     <div class="title">
-        <h1>ՀԱՅԵՐԵՆ ՀԱՆԳԵՐԻ ԳԵՆԵՐԱՏՈՐ | BETA v5 (08.2024)</h1>
+        <h1>ՀԱՅԵՐԵՆ ՀԱՆԳԵՐԻ ԳԵՆԵՐԱՏՈՐ | v6 (08.2024)</h1>
         <h2 id="hed"></h2>
         <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
         <br>
-        <input type="text" id="rifmi" placeholder="Բառը" class="search">
-        <input type="number" id="cnt" placeholder="Քանակը" class="count" value="150">
+        <input type="text" id="rifmi" placeholder="Բառը" class="search" title="qaq">
+        <input type="number" id="cnt" placeholder="Քանակը" class="count" value="200">
         <input type="text" id="startl" placeholder="Սկսվում է..." class="startl">
         <br>
         <div>
@@ -63,6 +64,7 @@
         function knowid(id) {
             return document.getElementById(id);
         }
+
         bars = window.bars;
         verbs = window.verbs;
         nouns = window.nouns;
@@ -114,10 +116,6 @@
         function getrifm(bar, dict, cnt) {
             var out = "<table>";
             var temp = [];
-            var vgood = 0;
-            var good = 0;
-            var norm = 0;
-            var other = 0;
             var lcnt = 1;
             var isankap = 0;
             var isynd = 0;
@@ -146,7 +144,7 @@
                             if (dict[x].slice(-lx) == barl) {
                                 if (getid("startl") == "") {
                                     if (lcnt == 0) out += "<tr>"
-                                    out += '<td><a target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a></td>';
+                                    out += '<td><a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a></td>';
                                     if (lcnt % 3 == 0 && lcnt != 0) out += "</tr>";
                                     temp.push(dict[x]);
                                     lcnt++;
@@ -154,7 +152,7 @@
                                 } else {
                                     if (dict[x].substring(0, getid("startl").length) == getid("startl").toLowerCase()) {
                                         if (lcnt == 0) out += "<tr>"
-                                        out += '<td><a target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a></td>';
+                                        out += '<td><a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a></td>';
                                         if (lcnt % 3 == 0) out += "</tr>";
                                         temp.push(dict[x]);
                                         lcnt++;
@@ -168,7 +166,6 @@
                 }
                 if (cnt != 0 && lcnt-1 == cnt) break;
             }
-            other = (out.split('<br>').length - 1) - (vgood + good + norm);
             if (out == "<table>") {
                 if (getid("rifmi") != '') {
                     knowid("finded").classList.add("shake");
@@ -189,6 +186,19 @@
             knowid("finded").onanimationend = () => {
                 knowid("finded").classList.remove("shake");
             };
+
+            $('.wiki').map(function() {
+                var id = this
+                getwiki(this.text, function(data) {
+                        var out = '';
+                        for(var y = 0; y < data.length; y++){
+                            if(y != data.length-1) out += data[y] + " | ";
+                            else out += data[y]
+                        }
+                        if(out != '') id.title = out;
+                        else id.title = "Կտցրեք բառին, որպեսզի նայեք նրա էջը Wiktionary-ում";
+                });
+            });
         }
 
         function randome(arr) {
