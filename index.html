@@ -13,13 +13,12 @@
 
 <body>
     <div class="title">
-        <h1>ՀԱՅԵՐԵՆ ՀԱՆԳԵՐԻ ԳԵՆԵՐԱՏՈՐ | v6 (08.2024)</h1>
+        <h1>ՀԱՅԵՐԵՆ ՀԱՆԳԵՐԻ ԳԵՆԵՐԱՏՈՐ | v6.5 (08.2024)</h1>
         <h2 id="hed"></h2>
         <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
         <br>
         <input type="text" id="rifmi" placeholder="Բառը" class="search" title="qaq">
-        <input type="number" id="cnt" placeholder="Քանակը" class="count" value="200">
-        <input type="text" id="startl" placeholder="Սկսվում է..." class="startl">
+        <input type="number" id="cnt" placeholder="Քանակը" class="count" value="200" style="width: 150px;">
         <br>
         <div>
             <button onclick="getb()" class="srchd">Գտնել</button>
@@ -44,9 +43,11 @@
                             </div>
                         </label>
                     </div>
-                    <button class="srchd" id="getbn" onclick="getbn()">Գոյականներ</button>
+                    <input type="text" id="startl" placeholder="Բառը Սկսվում է..." class="startl">
+                    <input type="number" id="vank" placeholder="Վանկերի Քանակ" class="count">
+                    <!-- <button class="srchd" id="getbn" onclick="getbn()">Գոյականներ</button>
                     <button class="srchd" id="getbv" onclick="getbv()">Բայեր</button>
-                    <button class="srchd" id="getbv" onclick="getba()">Ածականներ</button>
+                    <button class="srchd" id="getbv" onclick="getba()">Ածականներ</button> -->
                 </div>
             </div>
         </div>
@@ -63,6 +64,11 @@
         }
         function knowid(id) {
             return document.getElementById(id);
+        }
+
+        function isInt(value) {
+            var x = parseFloat(value);
+            return !isNaN(value) && (x | 0) === x;
         }
 
         bars = window.bars;
@@ -114,82 +120,84 @@
         });
 
         function getrifm(bar, dict, cnt) {
-            var out = "<table>";
-            var temp = [];
-            var lcnt = 1;
-            var isankap = 0;
-            var isynd = 0;
+            $(document).ready(function(){
+                var out = "<table>";
+                var temp = [];
+                var lcnt = 1;
+                var isankap = 0;
+                var isynd = 0;
 
-            if (knowid("ankapv").checked == true) {
-                isankap = 1;
-            }
-
-            if (knowid("yndv").checked == true) {
-                isynd = 1;
-            }
-
-            for (var lx = bar.length - 1 + isankap; lx > 1 - isankap; lx--) {
-                var barl = bar.slice(-lx);
-                var ending = [barl.slice(-1)];
-                if (isynd == 1) {
-                    for (var sx = 0; sx < simil.length; sx++) {
-                        if (simil[sx].includes(barl.slice(-1))) ending = simil[sx];
-                    }
+                if (knowid("ankapv").checked == true) {
+                    isankap = 1;
                 }
-                for (var x = 0; x < dict.length; x++) {
-                    if (temp.includes(dict[x]) == false && dict[x] != bar) {
-                        if (dict[x].includes(' ') && !isankap) continue;
-                        for (var sx = 0; sx < ending.length; sx++) {
-                            barl = barl.replace(/.$/, ending[sx]);
-                            if (dict[x].slice(-lx) == barl) {
-                                if (getid("startl") == "") {
-                                    if (lcnt == 0) out += "<tr>"
-                                    out += '<td><a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a></td>';
-                                    if (lcnt % 3 == 0 && lcnt != 0) out += "</tr>";
-                                    temp.push(dict[x]);
-                                    lcnt++;
-                                    rnda.push(dict[x]);
-                                } else {
-                                    if (dict[x].substring(0, getid("startl").length) == getid("startl").toLowerCase()) {
+
+                if (knowid("yndv").checked == true) {
+                    isynd = 1;
+                }
+
+                for (var lx = bar.length - 1 + isankap; lx > 1 - isankap; lx--) {
+                    var barl = bar.slice(-lx);
+                    var ending = [barl.slice(-1)];
+                    if (isynd == 1) {
+                        for (var sx = 0; sx < simil.length; sx++) {
+                            if (simil[sx].includes(barl.slice(-1))) ending = simil[sx];
+                        }
+                    }
+                    for (var x = 0; x < dict.length; x++) {
+                        if (temp.includes(dict[x]) == false && dict[x] != bar) {
+                            if (dict[x].includes(' ') && !isankap) continue;
+                            if (dict[x].includes('-') && !isankap) continue;
+                            for (var sx = 0; sx < ending.length; sx++) {
+                                barl = barl.replace(/.$/, ending[sx]);
+                                if (dict[x].slice(-lx) == barl) {
+                                    if (getid("startl") == "") {
                                         if (lcnt == 0) out += "<tr>"
                                         out += '<td><a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a></td>';
-                                        if (lcnt % 3 == 0) out += "</tr>";
+                                        if (lcnt % 3 == 0 && lcnt != 0) out += "</tr>";
                                         temp.push(dict[x]);
                                         lcnt++;
                                         rnda.push(dict[x]);
+                                    } else {
+                                        if (dict[x].substring(0, getid("startl").length) == getid("startl").toLowerCase()) {
+                                            if (lcnt == 0) out += "<tr>"
+                                            out += '<td><a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + dict[x] + '">' + dict[x] + '</a></td>';
+                                            if (lcnt % 3 == 0) out += "</tr>";
+                                            temp.push(dict[x]);
+                                            lcnt++;
+                                            rnda.push(dict[x]);
+                                        }
                                     }
                                 }
                             }
                         }
+                        if (cnt != 0 && lcnt-1 == cnt) break;
                     }
                     if (cnt != 0 && lcnt-1 == cnt) break;
                 }
-                if (cnt != 0 && lcnt-1 == cnt) break;
-            }
-            if (out == "<table>") {
-                if (getid("rifmi") != '') {
-                    knowid("finded").classList.add("shake");
-                    setid("rif", '');
-                    setid("finded", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a><br>' + 'Հանգեր Չգտնվեցին');
+                if (out == "<table>") {
+                    if (getid("rifmi") != '') {
+                        knowid("finded").classList.add("shake");
+                        setid("rif", '');
+                        setid("finded", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a><br>' + 'Հանգեր Չգտնվեցին');
+                    } else {
+                        knowid("finded").classList.add("shake");
+                        setid("finded", 'Գրեք Ձեր Բառը');
+                        setid("rif", '');
+                    }
                 } else {
-                    knowid("finded").classList.add("shake");
-                    setid("finded", 'Գրեք Ձեր Բառը');
-                    setid("rif", '');
+                    out += "</table>";
+                    setid("rif", out);
+                    setid("finded", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a><br>' + 'Գտնվեց ' + (lcnt-1) + ' Բառ')
+                    //setid("finded", 'Գտնվեց ' + (out.split('<br>').length-1) + ' Բառ<br>Շատ Լավ՝ ' + vgood.toString() + '  |  Լավ՝ ' + good.toString() + '  |  Նորմալ՝ ' + norm.toString() + '  |  Մնացածը՝ ' + other.toString());
                 }
-            } else {
-                out += "</table>";
-                setid("rif", out);
-                setid("finded", '<a target="_blank" href="https://hy.wiktionary.org/wiki/' + getid("rifmi").toLowerCase() + '">' + getid("rifmi").toLowerCase() + '</a><br>' + 'Գտնվեց ' + (lcnt-1) + ' Բառ')
-                //setid("finded", 'Գտնվեց ' + (out.split('<br>').length-1) + ' Բառ<br>Շատ Լավ՝ ' + vgood.toString() + '  |  Լավ՝ ' + good.toString() + '  |  Նորմալ՝ ' + norm.toString() + '  |  Մնացածը՝ ' + other.toString());
-            }
 
-            knowid("finded").onanimationend = () => {
-                knowid("finded").classList.remove("shake");
-            };
+                knowid("finded").onanimationend = () => {
+                    knowid("finded").classList.remove("shake");
+                };
 
-            $('.wiki').map(function() {
-                var id = this
-                getwiki(this.text, function(data) {
+                $('.wiki').map(function() {
+                    var id = this
+                    getwiki(id.text, function(data) {
                         var out = '';
                         for(var y = 0; y < data.length; y++){
                             if(y != data.length-1) out += data[y] + " | ";
@@ -197,9 +205,18 @@
                         }
                         if(out != '') id.title = out;
                         else id.title = "Կտցրեք բառին, որպեսզի նայեք նրա էջը Wiktionary-ում";
+                    });
+                    if(isInt(getid("vank")) && getid("vank") != 0){
+                        getvank(id.text, function(data) {
+                            if(!isInt(data) || data != getid("vank")) {
+                                //console.log(id.text, data)
+                                id.closest('td').remove();
+                            }
+                        });
+                    }
                 });
-            });
-        }
+            })
+        }   
 
         function randome(arr) {
             return arr[Math.floor(Math.random() * arr.length)];

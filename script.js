@@ -2,7 +2,7 @@ window.onload = function() {
     const bd = document.body;
     const bdctx = bd.innerHTML;
     const template = `
-    <img src="logo.png" class="logo" id="logo">
+    <img src="logo.png" class="logo" id="logo" onclick="location.href='index.html'" style="cursor: pointer;">
     <div style="text-align: center; padding-bottom: 15px;">
     <button class="hdr" onclick="location.href='index.html'">Հանգեր</button>
     <button class="hdr" onclick="location.href='mostfreq.html'">Ամենատարածվածներ</button>
@@ -60,7 +60,7 @@ function getwiki(word, callback) {
 			if (line.indexOf("# ") == 0) {
 				var newDefinition = line.replace("# ", "");
 				newDefinition = normalizeWikidata(newDefinition);
-				if(newDefinition == "" || newDefinition.includes("տե'ս") || newDefinition.includes("տե՛ս")) return false;
+				if(newDefinition == "" || newDefinition.includes("տե'ս") || newDefinition.includes("տե՛ս") || newDefinition.includes("տե՝ս")) return false;
 				results.push(newDefinition);
 				cnt++;
 			}
@@ -68,6 +68,38 @@ function getwiki(word, callback) {
 			else return false;
 		});
 		callback(results);
+	});
+}
+
+function getvank(word, callback) {
+	$.getJSON("https://hy.wiktionary.org/w/api.php?format=json&action=query&titles={word}&rvprop=content&prop=revisions&redirects=1&callback=?".replace("{word}", word), function (data) {
+		var title, content;
+
+		if(!data || !data.query || !data.query.pages || data.query.pages[-1]) {
+			return callback({});
+		}
+		
+		for (var page in data.query.pages) {
+			title = data.query.pages[page].title;
+			content = data.query.pages[page].revisions[0]["*"];
+		}
+
+		var text = content.split("\n");
+
+		var results = []
+
+		text.every(function (line) {
+			//console.log(line)
+			if(line.indexOf('{{վանկեր|') == 0) {
+				var res = line.replace('{{վանկեր|', '');
+				res = res.replace('}}', '');
+				results.push(res.split('•').length);
+				return false;
+			}
+			return true;
+		});
+		//console.log(results);
+		callback(results[0]);
 	});
 }
 
