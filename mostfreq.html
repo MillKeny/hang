@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html>
-<header>
-</header>
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" type="x-icon" href="icon.png">
 <script type="text/javascript" src="script.js"></script>
 <script type="text/javascript" src="texts.js"></script>
 <link rel="stylesheet" href="style.css">
 
 <title>Ամենատարածվածներ</title>
-<link rel="shortcut icon" type="x-icon" href="icon.png">
 
 </head>
 <body>
     <div class="title">
-        <h1 >ՀԱՅԵՐԵՆԻ ԱՄԵՆԱՇԱՏ ՕԳՏԱԳՈՐԾՎՈՂ ԲԱՌԵՐԸ ԵՎ ՏԱՌԵՐԸ | BETA v4 (04.2024)</h1>
+        <h1 >ՀԱՅԵՐԵՆԻ ԱՄԵՆԱՇԱՏ ՕԳՏԱԳՈՐԾՎՈՂ ԲԱՌԵՐԸ ԵՎ ՏԱՌԵՐԸ | v5 (09.2024)</h1>
         <!-- <h4>&#169 MillKeny 2023</h4> -->
         <h2 id="hed"></h2>
         <div class="dzma">
@@ -35,10 +33,10 @@
         }
         texts = window.texts;
         texts = texts.toLowerCase();
+        var num = 210;
         var letters = ["ա","բ","ց","դ","ե","ֆ","գ","հ","ի","ջ","կ","լ","մ","ն","օ","պ","ք","ր","ս","տ","ւ","վ","ո","խ","յ","զ", "Ը","Ծ","Ռ","Չ","Փ","Շ","Ձ","Է","Թ","Ճ","Ժ","Ղ", "ը","ծ","ռ","չ","փ","շ","ձ","է","թ","ճ","ժ","ղ", "Ա","Բ","Ց","Դ","Ե","Ֆ","Գ","Հ","Ի","Ջ","Կ","Լ","Մ","Ն","Օ","Պ","Ք","Ր","Ս","Տ","Ւ","Վ","Ո","Խ","Յ","Զ", "և"];
         function comm(){
             const str = texts.toLowerCase();
-            const num = 210;
             const findMostFrequent = (str = '', num = 1) => {
                 const strArr = str.split(' ');
                 const map = {};
@@ -61,12 +59,13 @@
         var ma = 150;
         var nu = 1;
         while(na < ma){
-            if(wordsa[na] == "" || wordsa[na] == null || wordsa[na] == undefined || [...wordsa[na]].length < 2) {
+            if(wordsa[na] == "" || wordsa[na] == null || wordsa[na] == undefined || [...wordsa[na]].length < 3) {
                 ma++;
                 na++;
                 continue;
             }
             wordso+=nu + ". " + wordsa[na] + "<br>" //wrdc(wordsa[na]) + "<br>"
+            //wordso+=wordsa[na] + "<br>"
             nu++;
             na++;
         }

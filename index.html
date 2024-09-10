@@ -13,7 +13,7 @@
 
 <body>
     <div class="title">
-        <h1>ՀԱՅԵՐԵՆ ՀԱՆԳԵՐԻ ԳԵՆԵՐԱՏՈՐ | v6.5 (08.2024)</h1>
+        <h1>ՀԱՅԵՐԵՆ ՀԱՆԳԵՐԻ ԳԵՆԵՐԱՏՈՐ | v7 (09.2024)</h1>
         <h2 id="hed"></h2>
         <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
         <br>
@@ -45,6 +45,7 @@
                     </div>
                     <input type="text" id="startl" placeholder="Բառը Սկսվում է..." class="startl">
                     <input type="number" id="vank" placeholder="Վանկերի Քանակ" class="count" min="0">
+                    <button class="srchd" id="getbn" onclick="getfreq()">Խելքին մոտ բառեր (BETA)</button>
                     <!-- <button class="srchd" id="getbn" onclick="getbn()">Գոյականներ</button>
                     <button class="srchd" id="getbv" onclick="getbv()">Բայեր</button>
                     <button class="srchd" id="getbv" onclick="getba()">Ածականներ</button> -->
@@ -75,11 +76,13 @@
         verbs = window.verbs;
         nouns = window.nouns;
         adjs = window.adjs;
+        mostfreq = window.mostfreq;
         bars.push(...verbs);
         bars.push(...nouns);
         bars.push(...adjs);
+        bars.push(...mostfreq);
         texts = window.texts;
-        setid("hed", "Պարունակում է " + bars.length + " Բառ");
+        setid("hed", "Պարունակում է " + (bars.length - mostfreq.length) + " Բառ");
         function getb() {
             getrifm(getid("rifmi").toLowerCase(), bars, getid("cnt"))
         }
@@ -92,6 +95,11 @@
         function getba() {
             if (getid("rifmi").toLowerCase() == "chamoy") window.open('chamoy.mp4');
             getrifm(getid("rifmi").toLowerCase(), adjs, getid("cnt"))
+        }
+        var isxelq = 0;
+        function getfreq() {
+            getrifm(getid("rifmi").toLowerCase(), mostfreq, getid("cnt"));
+            isxelq = 1;
         }
         var rnda = [];
         var rndw = "";
@@ -134,16 +142,16 @@
                 if (knowid("yndv").checked == true) {
                     isynd = 1;
                 }
-
-                for (var lx = bar.length - 1 + isankap; lx > 1 - isankap; lx--) {
-                    var barl = bar.slice(-lx);
-                    var ending = [barl.slice(-1)];
-                    if (isynd == 1) {
-                        for (var sx = 0; sx < simil.length; sx++) {
-                            if (simil[sx].includes(barl.slice(-1))) ending = simil[sx];
+                for (var x = 0; x < dict.length; x++) {
+                    if(dict[x][dict[x].length-1] == 'ը') dict[x] = dict[x].slice(0, -1);
+                    for (var lx = bar.length - 1 + isankap; lx > 1 - isankap; lx--) {
+                        var barl = bar.slice(-lx);
+                        var ending = [barl.slice(-1)];
+                        if (isynd == 1) {
+                            for (var sx = 0; sx < simil.length; sx++) {
+                                if (simil[sx].includes(barl.slice(-1))) ending = simil[sx];
+                            }
                         }
-                    }
-                    for (var x = 0; x < dict.length; x++) {
                         if (temp.includes(dict[x]) == false && dict[x] != bar) {
                             if (dict[x].includes(' ') && !isankap) continue;
                             if (dict[x].includes('-') && !isankap) continue;
@@ -238,6 +246,16 @@
             console.log("Tarer:", charlen, "Barer:", bars.length);
             console.log("Mij Erkarutyun:", charlen / bars.length);
         }
+
+        function record() {
+            var charlen = "";
+            for (var i = 1; i < bars.length; i++) {
+                if(bars[i].includes(" ")) continue;
+                if(charlen.length < bars[i].length) charlen = bars[i];
+            }
+            console.log(charlen);
+        }
+
     </script>
 
 </body>

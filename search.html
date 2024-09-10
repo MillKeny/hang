@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="dict.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<title>ՈՐՈՆՈՒՄ</title>
+<link rel="shortcut icon" type="x-icon" href="icon.png">
+
+</head>
+<body>
+    <div class="title">
+        <h1 >ՀԱՅԵՐԵՆ ԲԱՌԵՐԻ ՈՐՈՆՈՒՄ | v3 (09.2024)</h1>
+        <!-- <h4>&#169 MillKeny 2023</h4> -->
+        <h2 id="hed"></h2>  
+        <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
+        <br>
+        <input type="text" id="rifmi" placeholder="Պարունակում է․․․" style="width: 350px;" class="search" onchange="voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value)">
+        <br>
+        <input type="text" id="start" placeholder="Սկսվում է․․․" style="width: 250px;" class="startl" onchange="voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value)">
+        <input type="text" id="end" placeholder="Վերջանում է․․․" style="width: 250px;" class="startl" onchange="voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value)">
+        <br>
+        <div class="dropdown">
+            <button class="srchd" class="dropbtn">Այլ․․․</button>
+            <div class="dropdown-content">
+                <div>
+                    <label class="toggler-wrapper style-1">
+                        <input type="checkbox" id="ankapv">
+                        <div class="toggler-slider">
+                            <div class="toggler-knob"></div>
+                            <div class="badge">Անկապ Որոնում</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 id="findc" class="ftitle">-</h2>
+    <h2 id="finded" class="ftitle">-</h2>
+
+    <script>
+        function setid(id, txt){
+            document.getElementById(id).innerHTML = txt;
+        }
+        function getid(id){
+            return document.getElementById(id).value
+        }
+        function knowid(id){
+            return document.getElementById(id)
+        }
+
+        bars = window.bars;
+        verbs = window.verbs;
+        nouns = window.nouns;
+        adjs = window.adjs;
+        bars.push(...verbs);
+        bars.push(...nouns);
+        bars.push(...adjs);
+        texts = window.texts;
+        setid("hed", "Պարունակում է " + bars.length + " Բառ"); 
+        var rnda = [];
+        var rndw = "";
+        function randome(arr){
+            return arr[Math.floor(Math.random()*arr.length)]
+        }
+        function replaceCharacter(string, index, replacement) {
+            return (
+                string.slice(0, index) +
+                replacement +
+                string.slice(index + replacement.length)
+            );
+        }
+
+        function voronel(substring, start, end){
+            var isankap = false;
+            if (knowid("ankapv").checked == true) {
+                isankap = true;
+            }
+            var finded = "<table>";
+            var findc = 1;
+            function addhtml(bar){
+                if (findc == 0) finded += "<tr>"
+                finded += '<td><a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + bar.toLowerCase() + '">' + bar.toLowerCase() + '</a></td>'
+                if (findc % 3 == 0 && findc != 0) finded += "</tr>";
+                findc++;
+            }
+            substring = substring.toLowerCase()
+            start = start.toLowerCase()
+            end = end.toLowerCase()
+            //console.log(substring, start, end)
+            if(substring.length > 0 || start.length > 0 || end.length > 0){
+                for(var i = 0; i < bars.length; i++){
+                    if (bars[i].includes(' ') && !isankap) continue;
+                    if (bars[i].includes('-') && !isankap) continue;
+                    if(end != "" && start != ""){
+                        if(bars[i].substring(0, start.length) == start && bars[i].slice(-end.length) == end ){
+                            if (substring != "") {
+                                if(bars[i].indexOf(substring) >= 0){
+                                    addhtml(bars[i]);
+                                }
+                            } else {
+                                addhtml(bars[i]);
+                            }
+                        }
+                    }
+                    else if(start != "" && bars[i].substring(0, start.length) == start){
+                        if (substring != "") {
+                                if(bars[i].indexOf(substring) >= 0){
+                                    addhtml(bars[i]);    
+                                }
+                            } else {
+                                addhtml(bars[i]);
+                            }
+                    }
+                    else if(end != "" && bars[i].slice(-end.length) == end){
+                        if (substring != "") {
+                                if(bars[i].indexOf(substring) >= 0){
+                                    addhtml(bars[i]);    
+                                }
+                            } else {
+                                addhtml(bars[i]);    
+                            }
+                    }
+                    else if(end == "" && start == "") {
+                        if (substring != "") {
+                                if(bars[i].indexOf(substring) >= 0){
+                                    addhtml(bars[i]);
+                                }
+                            } else {
+                                addhtml(bars[i]);
+                            }
+                    }
+                }
+                setid("findc", "Գտնվեց " + (findc-1) + " բառ")
+
+                if(finded != "<table>") {
+                    finded += "</table>"
+                    setid("finded", finded);
+                }
+                else setid("finded", "-");
+            } else {
+                setid("findc", "Դաշտը դատարկ է")
+                setid("finded", "-")
+            };
+            $('.wiki').map(function() {
+                var id = this
+                getwiki(this.text, function(data) {
+                        var out = '';
+                        for(var y = 0; y < data.length; y++){
+                            if(y != data.length-1) out += data[y] + " | ";
+                            else out += data[y]
+                        }
+                        if(out != '') id.title = out;
+                        else id.title = "Կտցրեք բառին, որպեսզի նայեք նրա էջը Wiktionary-ում";
+                });
+            });
+        }
+
+        var input = document.body;
+        input.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value);
+            }
+        });
+        
+    </script>
+
+</body>
+</html>

@@ -2,13 +2,13 @@ window.onload = function() {
     const bd = document.body;
     const bdctx = bd.innerHTML;
     const template = `
-    <img src="logo.png" class="logo" id="logo" onclick="location.href='index.html'" style="cursor: pointer;">
+    <img src="logo.png" class="logo" id="logo" onclick="location.href='index.html'" style="cursor: pointer;" title="հանգ.հայ">
     <div style="text-align: center; padding-bottom: 15px;">
     <button class="hdr" onclick="location.href='index.html'">Հանգեր</button>
     <button class="hdr" onclick="location.href='mostfreq.html'">Ամենատարածվածներ</button>
     <!-- <button class="hdr" onclick="location.href='writer.html'">Պոետ</button> -->
     <button class="hdr" onclick="location.href='xach.html'">ԽԱՉԲԱՌ</button>
-    <button class="hdr" onclick="location.href='dic.html'">Որոնում</button>
+    <button class="hdr" onclick="location.href='search.html'">Որոնում</button>
     <button class="hdr" onclick="location.href='wordle.html'">WORDLE</button>
     <button class="hdr" onclick="location.href='mail.html'" style="background-color: black; color: white;">Գրել Նամակ</button>
     </div>
