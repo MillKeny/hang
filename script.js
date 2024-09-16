@@ -13,10 +13,27 @@ window.onload = function() {
     <button class="hdr" onclick="location.href='mail.html'" style="background-color: black; color: white;">Գրել Նամակ</button>
     </div>
     ${bdctx}
+	<script>
+	window.yaContextCb.push(() => {
+		Ya.Context.AdvManager.render({
+			"blockId": "R-A-11969300-1",
+			"type": "floorAd",
+			"platform": "touch"
+		})
+	})
+	</script>
     `;
 
     bd.innerHTML = template;
-    document.getElementById("yndv").checked = true;
+
+    const հdctx = document.head.innerHTML;
+    const htemplate = `
+	${հdctx}
+	<script>window.yaContextCb=window.yaContextCb||[]</script>
+	<script src="https://yandex.ru/ads/system/context.js" async></script>
+	`;
+
+	document.head.innerHTML = htemplate;
 }
 
 function getwiki(word, callback) {

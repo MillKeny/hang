@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="title">
-        <h1 >ՀԱՅԵՐԵՆ WORDLE | v1 (05.2024)</h1>
+        <h1 >ՀԱՅԵՐԵՆ WORDLE | v2 (09.2024)</h1>
         <h2 id="hed"></h2>  
         <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
         <br>
@@ -50,6 +50,7 @@
         verbs = window.verbs;
         nouns = window.nouns;
         adjs = window.adjs;
+        mostfreq = window.mostfreq;
         bars.push(...verbs);
         bars.push(...nouns);
         bars.push(...adjs);
@@ -120,13 +121,13 @@
                 maxtries = getid("cnt");
                 barl = getid("cntt");
                 barer = [];
-                for(var i = 0; i < bars.length; i++){
-                    barsu = bars[i];
+                for(var i = 0; i < mostfreq.length; i++){
+                    barsu = mostfreq[i];
                     for(var j = 0; j < barsu.length; j++){
                         if (barsu[j] === "ւ" && barsu[j-1] == 'ո') barsu = barsu.substring(0, j - 1) + barsu.substring(j, barsu.length);
                         else if (barsu[j] === "ւ" && barsu[j-1] != 'ո') continue;
                     }
-                    if(barsu.length == barl) barer.push(bars[i]);
+                    if(barsu.length == barl && nouns.includes(mostfreq[i])) barer.push(mostfreq[i]);
                 }
 
                 rword = randome(barer);
@@ -142,7 +143,7 @@
                 if (rword[j] === "ւ" && rword[j-1] == 'ո') rword = rword.substring(0, j - 1) + rword.substring(j, rword.length);
             }
             test = word;
-            if(word.length == barl && fin == false && fail == false && barer.includes(iw)){
+            if(word.length == barl && fin == false && fail == false && bars.includes(iw)){
                 for(j in tmpgray) {
                     if(tmpalph[j] == tmpgray[j]) {
                         tmpalph[j] = "<span style='font-size: 35px; color: white; background-color: gray'>" + tmpalph[j] + "</span>";
