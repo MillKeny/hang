@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="title">
-        <h1 >ՀԱՅԵՐԵՆ ԲԱՌԵՐԻ ՈՐՈՆՈՒՄ | v3 (09.2024)</h1>
+        <h1 >ՀԱՅԵՐԵՆ ԲԱՌԵՐԻ ՈՐՈՆՈՒՄ | v3 (05.2025)</h1>
         <!-- <h4>&#169 MillKeny 2023</h4> -->
         <h2 id="hed"></h2>  
         <a href="dict.js" download target="_blank">Ներբեռնել Բառերի Ցանկը</a>
@@ -27,6 +27,7 @@
         <div class="dropdown">
             <button class="srchd" class="dropbtn">Այլ․․․</button>
             <div class="dropdown-content">
+				<input type="number" id="cnt" placeholder="Տառերի Քանակը" class="count" value="0" style="width: 175px;" min="0" onchange="voronel(document.getElementById('rifmi').value, document.getElementById('start').value, document.getElementById('end').value)">
                 <div>
                     <label class="toggler-wrapper style-1">
                         <input type="checkbox" id="ankapv">
@@ -82,6 +83,7 @@
             }
             var finded = "<table>";
             var findc = 1;
+			var wlen = getid("cnt")
             function addhtml(bar){
                 if (findc == 0) finded += "<tr>"
                 finded += '<td><a class="wiki" target="_blank" href="https://hy.wiktionary.org/wiki/' + bar.toLowerCase() + '">' + bar.toLowerCase() + '</a></td>'
@@ -96,6 +98,7 @@
                 for(var i = 0; i < bars.length; i++){
                     if (bars[i].includes(' ') && !isankap) continue;
                     if (bars[i].includes('-') && !isankap) continue;
+					if (bars[i].length!=wlen && wlen>0) continue;
                     if(end != "" && start != ""){
                         if(bars[i].substring(0, start.length) == start && bars[i].slice(-end.length) == end ){
                             if (substring != "") {

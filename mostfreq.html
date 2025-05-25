@@ -5,6 +5,7 @@
 <link rel="shortcut icon" type="x-icon" href="icon.png">
 <script type="text/javascript" src="script.js"></script>
 <script type="text/javascript" src="texts.js"></script>
+<script type="text/javascript" src="dict.js"></script>
 <link rel="stylesheet" href="style.css">
 
 <title>Ամենատարածվածներ</title>
@@ -33,8 +34,19 @@
         }
         texts = window.texts;
         texts = texts.toLowerCase();
+		
+		bars = window.bars;
+        verbs = window.verbs;
+        nouns = window.nouns;
+        adjs = window.adjs;
+        mostfreq = window.mostfreq;
+        bars.push(...verbs);
+        bars.push(...nouns);
+        bars.push(...adjs);
+        bars.push(...mostfreq);
+		
         var num = 210;
-        var letters = ["ա","բ","ց","դ","ե","ֆ","գ","հ","ի","ջ","կ","լ","մ","ն","օ","պ","ք","ր","ս","տ","ւ","վ","ո","խ","յ","զ", "Ը","Ծ","Ռ","Չ","Փ","Շ","Ձ","Է","Թ","Ճ","Ժ","Ղ", "ը","ծ","ռ","չ","փ","շ","ձ","է","թ","ճ","ժ","ղ", "Ա","Բ","Ց","Դ","Ե","Ֆ","Գ","Հ","Ի","Ջ","Կ","Լ","Մ","Ն","Օ","Պ","Ք","Ր","Ս","Տ","Ւ","Վ","Ո","Խ","Յ","Զ", "և"];
+        var letters = ["ա","բ","ց","դ","ե","ֆ","գ","հ","ի","ջ","կ","լ","մ","ն","օ","պ","ք","ր","ս","տ","ւ","վ","ո","խ","յ","զ","Ը","Ծ","Ռ","Չ","Փ","Շ","Ձ","Է","Թ","Ճ","Ժ","Ղ","ը","ծ","ռ","չ","փ","շ","ձ","է","թ","ճ","ժ","ղ","Ա","Բ","Ց","Դ","Ե","Ֆ","Գ","Հ","Ի","Ջ","Կ","Լ","Մ","Ն","Օ","Պ","Ք","Ր","Ս","Տ","Ւ","Վ","Ո","Խ","Յ","Զ","և"];
         function comm(){
             const str = texts.toLowerCase();
             const findMostFrequent = (str = '', num = 1) => {
@@ -127,11 +139,36 @@
 
 
         function wrdc(str){
-            
             var temp = " " + str + " ";
             var count = texts.split(temp).length - 1;
             return " | " + count;
         }
+		
+		function findUniqueWords(inputString) {
+		  const words = inputString.split(/\s+/);
+		  const uniqueWords = new Set();
+
+		  for (const word of words) {
+			const sanitizedWord = word.toLowerCase().replace(/[.,?!]/g, '');
+			if (!uniqueWords.has(sanitizedWord)) {
+			  uniqueWords.add(sanitizedWord);
+			}
+		  }
+
+		  const uniqueWordsArray = Array.from(uniqueWords);
+
+		  return uniqueWordsArray;
+		}
+		
+		function barapashar(){
+			uniqArr = findUniqueWords(texts);
+			var resArr = []
+			for (i in uniqArr) {
+				if (bars.includes(uniqArr[i])) resArr.push(uniqArr[i]) 
+			}
+			
+			console.log(resArr)
+		}
 
     </script>
 

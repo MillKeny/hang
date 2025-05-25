@@ -2,7 +2,7 @@ window.onload = function() {
     const bd = document.body;
     const bdctx = bd.innerHTML;
     const template = `
-    <img src="logo.png" class="logo" id="logo" onclick="location.href='index.html'" style="cursor: pointer;" title="հանգ.հայ">
+    <img src="logo.png" class="logo" id="logo" onclick="location.href='https://github.com/MillKeny/hang'" style="cursor: pointer;" title="հանգ.հայ">
     <div style="text-align: center; padding-bottom: 15px;">
     <button class="hdr" onclick="location.href='index.html'">Հանգեր</button>
     <button class="hdr" onclick="location.href='mostfreq.html'">Ամենատարածվածներ</button>
